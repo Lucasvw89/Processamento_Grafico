@@ -41,14 +41,7 @@ void Vector::print() const{
     std::cout << "(" << this->x << ", " << this->y << ", " << this->z << ")" << std::endl;
 }
 
-// Operators
-/*
-Recebe como parâmetro um vetor e retorna um >>novo vetor<< com os valores somados
-*/
-Vector Vector::soma_de_vetor(const Vector& v) const {
-    return Vector(this->x + v.getX(), this->y + v.getY(), this->z + v.getZ());
-}
-
+//OPERAÇÕES
 
 /*
     Recebe o vetor e retorna o produto vetorial entre eles, seguindo o cálculo da matriz
@@ -71,7 +64,6 @@ double Vector::norma() const {
     return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 }
 
-
 /*
 Normaliza o vetor (Vetor unitário)
 */
@@ -91,17 +83,51 @@ double Vector::produto_escalar(const Vector& v) const{
 }
 
 /*
-Recebe um escalar (double) e retorna um novo Vector com os valores multiplicados
-*/
-Vector Vector::multiplicar_escalar(double escalar) const{
-    return Vector(this->x * escalar, this->y * escalar, this->z * escalar);
-}
-
-/*
     Recebe um Vector e retorna a projeção vetorial de V no vetor atual.
 */
 Vector Vector::projecao_vetorial(const Vector& v) const{
     double temp = this->produto_escalar(v) / this->norma()*this->norma();
 
     return this->multiplicar_escalar(temp);
+}
+
+/*
+Operadores ["*", "+", "-", "/"]
+Sobrescrevem as operações básicas dessa classe para operações do tipo:
+    - Vetor-Vetor
+    - Vetor-Escalar
+    - Escalar-Vetor
+*/
+
+inline Vector operator+(const Vector &v1, const Vector &v2)
+{
+	return Vector(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ());
+}
+inline Vector operator-(const Vector &v1, const Vector &v2)
+{
+	return Vector(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ());
+}
+inline Vector operator*(const Vector &v1, const Vector &v2)
+{
+	return Vector(v1.getX() * v2.getX(), v1.getY() * v2.getY(), v1.getZ() * v2.getZ());
+}
+inline Vector operator/(const Vector &v1, const Vector &v2)
+{
+	return Vector(v1.getX() / v2.getX(), v1.getY() / v2.getY(), v1.getZ() / v2.getZ());
+}
+inline Vector operator*(double t, const Vector &v)
+{
+	return Vector(t * v.getX(), t * v.getY(), t * v.getZ());
+}
+inline Vector operator*(const Vector &v, double t)
+{
+	return Vector(t * v.getX(), t * v.getY(), t * v.getZ());
+}
+inline Vector operator/(double t, const Vector &v)
+{
+	return Vector(t / v.getX(), t / v.getY(), t / v.getZ());
+}
+inline Vector operator/(const Vector &v, double t)
+{
+	return Vector(v.getX() / t, v.getY() / t, v.getZ() / t);
 }
