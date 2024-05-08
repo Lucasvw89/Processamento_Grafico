@@ -28,13 +28,11 @@ public:
     void print() const;
 
     // Operações
-    Vector soma_de_vetor(const Vector& v) const;      // Soma dois vetores e retorna o resultado
-    Vector produto_vetorial(const Vector& v) const;   // Calcula o produto vetorial com outro vetor
+    void normalizar();                                // Normaliza o vetor
     double norma() const;                             // Calcula a norma do vetor
     double produto_escalar(const Vector& v) const;    // Calcula o produto escalar com outro vetor
-    Vector multiplicar_escalar(double escalar) const; // Multiplica o vetor por um escalar
     Vector projecao_vetorial(const Vector& v) const;  // Calcula a projeção vetorial deste vetor em outro vetor
-    void normalizar();                                // Normaliza o vetor
+    Vector produto_vetorial(const Vector& v) const;   // Calcula o produto vetorial com outro vetor
 };
 
 #endif // VECTOR_HPP
