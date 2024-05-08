@@ -86,9 +86,9 @@ double Vector::produto_escalar(const Vector& v) const{
     Recebe um Vector e retorna a projeção vetorial de V no vetor atual.
 */
 Vector Vector::projecao_vetorial(const Vector& v) const{
-    double temp = this->produto_escalar(v) / this->norma()*this->norma();
+    double temp = this->produto_escalar(v) / (this->norma()*this->norma());
 
-    return this->multiplicar_escalar(temp);
+    return *this * temp;
 }
 
 /*
