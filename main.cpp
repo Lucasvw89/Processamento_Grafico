@@ -1,12 +1,12 @@
 #include <iostream>
-#include "include/Vector.hpp"
+#include "src/Vector.cpp"
 
 int main() {
-    Vector v1(1, 2, 3);
-    Vector v2(4, 5, 6);
+    Vector v1(1, 1, 0);
+    Vector v2(1, 0, 0);
     std::cout << v1.norma() << std::endl;
-    v1.normalizar();
-    v1.print();
+    Vector v3 = v2.projecao_vetorial(v1);
+    v3.print();
 
     return 0;
 }
