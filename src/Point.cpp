@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 using namespace std;
-#include "Vector.cpp"
+#include "vector.cpp"
 
 class point
 {
@@ -11,6 +11,7 @@ private:
     double z;
 public:
 
+    point() {}
     point(double x, double y, double z)
     {
         this->x = x;
@@ -49,19 +50,19 @@ public:
     }
 
 
-    inline point operator+(Vector v1)
+    inline point operator+(vector v1)
     {
         return point(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
     }
 
-    inline point operator-(Vector v1)
+    inline point operator-(vector v1)
     {
         return point(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
     }
 
-    inline Vector operator-(point p1)
+    inline vector operator-(point p1)
     {
-        return Vector(this->getX() - p1.getX(), this->getY() - p1.getY(), this->getZ() - p1.getZ());
+        return vector(this->getX() - p1.getX(), this->getY() - p1.getY(), this->getZ() - p1.getZ());
     }
 
     inline void operator=(point p1)

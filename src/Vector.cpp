@@ -1,7 +1,7 @@
 #include <iostream>
 #include <math.h>
 
-class Vector{
+class vector{
     private:
         double x;
         double y;
@@ -9,15 +9,16 @@ class Vector{
 
     
     /*
-    Recebe um escalar (double) e retorna um novo Vector com os valores multiplicados
+    Recebe um escalar (double) e retorna um novo vector com os valores multiplicados
     */
-    Vector multiplicar_escalar(double escalar){
-        return Vector(this->x * escalar, this->y * escalar, this->z * escalar);
+    vector multiplicar_escalar(double escalar){
+        return vector(this->x * escalar, this->y * escalar, this->z * escalar);
     }
 
     public:
 
-        Vector(double x, double y, double z){
+        vector() {}
+        vector(double x, double y, double z){
             this->x = x;
             this->y = y;
             this->z = z;
@@ -64,8 +65,8 @@ class Vector{
             | x y z |
             | a b c |
         */
-        Vector produto_vetorial(Vector v){
-            return Vector(
+        vector produto_vetorial(vector v){
+            return vector(
                         (this->y * v.getZ()) - (this->z * v.getY()), // i
                         (this->z * v.getX()) - (this->x * v.getZ()), // j
                         (this->x * v.getY()) - (this->y * v.getX())  // k
@@ -79,40 +80,45 @@ class Vector{
             return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
         }
 
+        vector normalizar(){
+            double norma = (1 / this->norma());
+            return vector(this->x * norma, this->y * norma, this->z * norma);
+        }
+
         /*
         Recebe um vetor e retorna o produto escalar entre eles
         */
-        double produto_escalar(Vector v){
+        double produto_escalar(vector v){
             return this->x * v.getX() + this->y * v.getY() + this->z * v.getZ();
         }
 
         /*
-            Recebe um Vector e retorna a projeção vetorial de V no vetor atual.
+            Recebe um vector e retorna a projeção vetorial de V no vetor atual.
         */
-        Vector projecao_vetorial(Vector v){
+        vector projecao_vetorial(vector v){
             double temp = this->produto_escalar(v) / (this->norma()*this->norma());
 
             return this->multiplicar_escalar(temp);
         }
 
 
-        inline Vector operator+(Vector v1)
+        inline vector operator+(vector v1)
         {
-            return Vector(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
+            return vector(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
         }
 
-        inline Vector operator-(Vector v1)
+        inline vector operator-(vector v1)
         {
-            return Vector(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
+            return vector(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
         }
 
-        inline Vector operator*(double t1)
+        inline vector operator*(double t1)
         {
-            return Vector(t1 * this->getX(), t1 * this->getY(), t1 * this->getZ());
+            return vector(t1 * this->getX(), t1 * this->getY(), t1 * this->getZ());
         }
 
-        inline Vector operator/(double t1)
+        inline vector operator/(double t1)
         {
-            return Vector(this->getX()/t1, this->getY()/t1, this->getZ()/t1);
+            return vector(this->getX()/t1, this->getY()/t1, this->getZ()/t1);
         }
 };
