@@ -103,7 +103,7 @@ class Vector{
 
         inline Vector operator-(Vector v1)
         {
-            return Vector(v1.getX() - this->getX(), v1.getY() - this->getY(), v1.getZ() - this->getZ());
+            return Vector(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
         }
 
         inline Vector operator*(double t1)
