@@ -1,7 +1,9 @@
 #include <iostream>
-#include "src/Camera.cpp"
+#include "src/Camera.h"
 
 int main() {
+
+
     vector v1(1, 1, 0);
     vector v2(1, 0, 0);
     std::cout << v1.norma() << std::endl;
