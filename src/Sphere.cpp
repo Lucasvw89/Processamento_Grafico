@@ -8,18 +8,16 @@
 
 class sphere{
     private:
+    
+    public:
         point center;
         double radius;
         vector color;
-    
-    public:
         sphere(point center, double radius, vector color){
             this->center = center;
             this->radius = radius;
             this->color = color;
         }
-
-        sphere(){};
 
         bool hit_sphere(point/* & */ center, double radius, ray& r) {
             vector oc = center - r.origin;
@@ -37,7 +35,11 @@ class sphere{
             vector unit_direction = r.direction.normalizar();
             auto a = 0.5*(unit_direction.getY() + 1.0);
             return vector(1.0, 1.0, 1.0)*(1.0-a) + vector(0.5, 0.7, 1.0)*a; 
-    }
+        }
 
+        void render()
+        {
+            
+        }       
 };
 #endif

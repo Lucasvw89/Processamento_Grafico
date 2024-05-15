@@ -125,6 +125,7 @@ class vector{
             return vector(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
         }
 
+
         inline vector operator-(vector v1)
         {
             return vector(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
