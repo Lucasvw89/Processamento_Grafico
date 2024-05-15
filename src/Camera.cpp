@@ -18,10 +18,14 @@ private:
     double distance;
     int height;
     int width;
+    double focal_lenght;
 
 
 public:
     camera (
+        int height,
+        int width,
+        double focal_lenght,
         point p,
         point t,
         vector u,
