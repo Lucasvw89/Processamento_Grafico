@@ -21,10 +21,13 @@ class sphere{
 
         sphere(){};
 
-        double hit(ray raio){
-            double t;
-
-            vector OC = raio.origin - center;
+        bool hit_sphere(point& center, double radius, ray& r) {
+            vector oc = center - r.origin;
+            auto a = r.direction.produto_escalar(r.direction);
+            auto b = -2.0 * r.direction.produto_escalar(oc);
+            auto c = oc.produto_escalar(oc) - radius*radius;
+            auto discriminant = b*b - 4*a*c;
+            return (discriminant >= 0);
         }
     
 };

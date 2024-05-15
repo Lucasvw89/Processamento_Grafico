@@ -105,10 +105,10 @@ class vector{
 
 
         //Converte o vetor unitario de cor para o formato RGB, pronto para ser escrito no PPM
-        void write_color(std::ostream& out, vector& pixel_color) {
-            auto r = pixel_color.getX();
-            auto g = pixel_color.getY();
-            auto b = pixel_color.getZ();
+        void write_color(std::ostream& out) {
+            auto r = this->getX();
+            auto g = this->getY();
+            auto b = this->getZ();
 
             // Write out the pixel color components.
             int rbyte = int(255.999 * r);

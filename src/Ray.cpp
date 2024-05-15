@@ -11,8 +11,16 @@ using namespace std;
 class ray
 {
 public:
-	point origin; // vetor e não ponto para facilitar produto escalar no cálculo de intersessão
+	point origin; 
 	vector direction;
+	
+	point get_origin(){
+		return this->origin;
+	}
+
+	vector get_direction(){
+		return this->direction;
+	}
 
 	ray(point origin, vector direction)
 	{
