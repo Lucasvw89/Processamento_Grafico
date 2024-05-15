@@ -3,19 +3,18 @@
 
 #include <iostream>
 #include <cmath>
-#include "Vector.h"
-#include "Point.h"
-#include "Color.h"
+#include "Vector.cpp"
+#include "Point.cpp"
 
 using namespace std;
 
 class ray
 {
 public:
-	vector origin; // vetor e não ponto para facilitar produto escalar no cálculo de intersessão
+	point origin; // vetor e não ponto para facilitar produto escalar no cálculo de intersessão
 	vector direction;
 
-	ray(vector origin, vector direction)
+	ray(point origin, vector direction)
 	{
 		this->origin = origin;
 		this->direction = direction;
@@ -25,7 +24,7 @@ public:
 	point f(double t)
 	{
 		point O = point(origin.getX(),origin.getY(),origin.getZ());
-		return O + (direction.multiplicar_escalar(t));
+		return O + (direction * t );
 	}
 
 };

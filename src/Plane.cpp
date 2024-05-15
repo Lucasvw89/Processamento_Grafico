@@ -3,10 +3,9 @@
 
 #include <iostream>
 #include <cmath>
-#include "Vector.h"
-#include "Point.h"
-#include "Color.h"
-#include "Ray.h"
+#include "Vector.cpp"
+#include "Point.cpp"
+#include "Ray.cpp"
 
 using namespace std;
 
@@ -15,25 +14,24 @@ class plane
 public:
 	vector p; // vetor ao invés de ponto para compatibilidade com operações
 	vector normal;
-	color c;
+	vector color;
 
-	plane(vector p, vector normal, color c)
+	plane(vector p, vector normal, vector color)
 	{
 		this->p = p;
 		this->normal = normal;
-		this->c = c;
+		this->color = color;
 	}
 	
 	// intersessão: 
 		// retorna parâmetro do vetor ray.direction em que houve intersessão,
 		// ou inf
-	double hit(const& ray raio)
+	double hit(ray raio)
 	{
 		double t;
-		vector O,D;
+		vector D = raio.direction;
+		vector O(raio.origin.getX(), raio.origin.getY(), raio.origin.getZ());
 
-		O = raio.origin;
-		D = raio.direction;
 		// divisão por zero com doubles retorna inf pela norma do c++: sem RTE
 		t = ( normal.produto_escalar((p-O)) / normal.produto_escalar(D) );
 
@@ -41,3 +39,5 @@ public:
 	}
 
 };
+
+#endif

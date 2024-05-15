@@ -1,7 +1,10 @@
+#ifndef POINTRHEADER
+#define POINTRHEADER
+
 #include <iostream>
 #include <cmath>
 using namespace std;
-#include "vector.cpp"
+#include "Vector.cpp"
 
 class point
 {
@@ -87,3 +90,5 @@ public:
     }
 
 };
+
+#endif

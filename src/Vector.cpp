@@ -1,3 +1,5 @@
+#ifndef VECTORHEADER
+#define VECTORHEADER
 #include <iostream>
 #include <math.h>
 
@@ -102,6 +104,22 @@ class vector{
         }
 
 
+        //Converte o vetor unitario de cor para o formato RGB, pronto para ser escrito no PPM
+        void write_color(std::ostream& out, vector& pixel_color) {
+            auto r = pixel_color.getX();
+            auto g = pixel_color.getY();
+            auto b = pixel_color.getZ();
+
+            // Write out the pixel color components.
+            int rbyte = int(255.999 * r);
+            int gbyte = int(255.999 * g);
+            int bbyte = int(255.999 * b);
+
+            // Write out the pixel color components.
+            out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
+        }
+
+
         inline vector operator+(vector v1)
         {
             return vector(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
@@ -122,3 +140,5 @@ class vector{
             return vector(this->getX()/t1, this->getY()/t1, this->getZ()/t1);
         }
 };
+
+#endif

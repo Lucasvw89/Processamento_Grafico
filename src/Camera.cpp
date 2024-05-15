@@ -1,3 +1,6 @@
+#ifndef CAMRHEADER
+#define CAMRHEADER
+
 #include <iostream>
 #include "Point.cpp"
 
@@ -12,7 +15,7 @@ private:
     vector W;
     vector V;
     vector U;
-    double D_screen;
+    double distance;
     int height;
     int width;
 
@@ -21,7 +24,8 @@ public:
     camera (
         point p,
         point t,
-        vector u
+        vector u,
+        double d = 10.0
     ) {
         this->position = p;
         this->target = t;
@@ -29,6 +33,7 @@ public:
         this->W = (target - position).normalizar();
         this->V = up.produto_vetorial(W).normalizar();
         this->U = up.produto_vetorial(V).normalizar();
+        this->distance = d;
     };
 
     void print() {
@@ -41,5 +46,7 @@ public:
         U.print();
     }
 
-    void render() {}
+    void render() {};
 };
+
+#endif
