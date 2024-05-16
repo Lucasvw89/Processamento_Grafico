@@ -11,6 +11,7 @@ using namespace std;
 class camera 
 {
 private:
+
     point position;
     point target;
     vector up;
@@ -20,28 +21,46 @@ private:
     double distance;
     int height;
     int width;
-    double focal_lenght;
+    double aspect_ratio;
+    double focal_length;
+    double viewport_height;
 
 
 public:
 
-
+        point getPosition() const { return position; }
+        point getTarget() const { return target; }
+        vector getUp() const { return up; }
+        vector getW() const { return W; }
+        vector getV() const { return V; }
+        vector getU() const { return U; }
+        double getDistance() const { return distance; }
+        int getHeight() const { return height; }
+        int getWidth() const { return width; }
+        double getAspectRatio() const { return aspect_ratio; }
+        double getFocalLength() const { return focal_length; }
+        double getViewportHeight() const { return viewport_height; }
     camera (
-        int height,
         int width,
-        double focal_lenght,
         point p,
         point t,
         vector u,
-        double d = 10.0
+        double d = 10.0,
+        double aspect_ratio = 16.0 / 9.0,
+        double focal_length=1.0,
+        double viewport_height = 2.0
     ) {
         this->position = p;
+        this->width= width;
         this->target = t;
         this->up = u;
         this->W = (target - position).normalizar();
         this->V = up.produto_vetorial(W).normalizar();
         this->U = up.produto_vetorial(V).normalizar();
         this->distance = d;
+        this->aspect_ratio = aspect_ratio;
+        this->focal_length = focal_length;
+        this->viewport_height= viewport_height;
     };
     camera(){
     }
@@ -58,7 +77,7 @@ public:
     vector ray_color( ray& r, sphere& s) {
         if (s.hit_sphere(s.center,s.radius,r))
         {
-            return vector(1, 0, 0);
+            return s.color;
 
         }
         vector unit_direction = r.direction.normalizar();
@@ -69,17 +88,13 @@ public:
 
     void render() 
     {
-        auto aspect_ratio = 16.0 / 9.0;
-        int image_width = 400;
 
+        int image_width = this->width;
         int image_height = int(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
 
-
-        auto focal_length = 1.0;
-        auto viewport_height = 2.0;
         auto viewport_width = viewport_height * (double(image_width)/image_height);
-        auto camera_center = point(0, 0, 0);
+        auto camera_center = this->position;
 
         auto viewport_u = vector(viewport_width, 0, 0);
         auto viewport_v = vector(0, -viewport_height, 0);
@@ -97,8 +112,10 @@ public:
                 auto pixel_center = pixel00_loc + (pixel_delta_u*i) + (pixel_delta_v*j);
                 auto ray_direction = pixel_center - camera_center;
                 ray r(camera_center, ray_direction);
+
                 point p(0,0,1);
-                sphere esfera(p, 0.5, vector(1,0,0));
+                sphere esfera(p, 0.5, vector(0,1,0));
+
                 vector pixel_color = ray_color(r,esfera);
                 pixel_color.write_color(cout);
             }

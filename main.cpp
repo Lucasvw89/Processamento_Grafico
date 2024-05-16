@@ -15,9 +15,9 @@ int main() {
     // std::cout << v1.norma() << std::endl;
     point p1(1,2,3);
     point p2(4,5,7);
-    camera cam(200,400,1.0,p1, p2, v1);
+    camera cam(400,p1, p2, v1);
     cam.render();
-    
+
 
     return 0;
 }
