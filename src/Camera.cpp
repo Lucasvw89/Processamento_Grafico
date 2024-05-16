@@ -2,6 +2,7 @@
 #define CAMRHEADER
 
 #include <iostream>
+#include <vector>
 #include "Point.cpp"
 #include "Ray.cpp"
 #include "Sphere.cpp"
@@ -14,10 +15,10 @@ private:
 
     point position;
     point target;
-    vector up;
-    vector W;
-    vector V;
-    vector U;
+    vetor up;
+    vetor W;
+    vetor V;
+    vetor U;
     double distance;
     int height;
     int width;
@@ -30,10 +31,10 @@ public:
 
         point getPosition() const { return position; }
         point getTarget() const { return target; }
-        vector getUp() const { return up; }
-        vector getW() const { return W; }
-        vector getV() const { return V; }
-        vector getU() const { return U; }
+        vetor getUp() const { return up; }
+        vetor getW() const { return W; }
+        vetor getV() const { return V; }
+        vetor getU() const { return U; }
         double getDistance() const { return distance; }
         int getHeight() const { return height; }
         int getWidth() const { return width; }
@@ -44,7 +45,7 @@ public:
         int width,
         point p,
         point t,
-        vector u,
+        vetor u,
         double d = 10.0,
         double aspect_ratio = 16.0 / 9.0,
         double focal_length=1.0,
@@ -74,19 +75,21 @@ public:
         U.print();
     }
 
-    vector ray_color( ray& r, sphere& s) {
-        if (s.hit_sphere(s.center,s.radius,r))
-        {
-            return s.color;
-
+    vetor ray_color( ray& r, object& s) {
+        sphere* esfera = dynamic_cast<sphere*>(&s); // Tentativa de converter o objeto para uma esfera
+        if (esfera) {
+            if (esfera->hit_sphere(r)) {
+                return esfera->getColor();
+                std::clog<<"deuhit"<<std::endl;
+            }
         }
-        vector unit_direction = r.direction.normalizar();
+        vetor unit_direction = r.direction.normalizar();
         auto a = 0.5*(unit_direction.getY() + 1.0);
-        return vector(1.0, 1.0, 1.0)*(1.0-a) + vector(0.5, 0.7, 1.0)*a;
+        return vetor(1.0, 1.0, 1.0)*(1.0-a) + vetor(0.5, 0.7, 1.0)*a;
     }
 
 
-    void render() 
+    void render(vector<object *> objetos) 
     {
 
         int image_width = this->width;
@@ -96,27 +99,24 @@ public:
         auto viewport_width = viewport_height * (double(image_width)/image_height);
         auto camera_center = this->position;
 
-        auto viewport_u = vector(viewport_width, 0, 0);
-        auto viewport_v = vector(0, -viewport_height, 0);
+        auto viewport_u = vetor(viewport_width, 0, 0);
+        auto viewport_v = vetor(0, -viewport_height, 0);
 
         auto pixel_delta_u = viewport_u / image_width;
         auto pixel_delta_v = viewport_v / image_height;
-        auto viewport_upper_left = camera_center- vector(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
+        auto viewport_upper_left = camera_center- vetor(0, 0, focal_length) - viewport_u/2 - viewport_v/2;
         auto pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v)*0.5;
 
         std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
 
         for (int j = 0; j < image_height; j++) {
-            std::clog << "\rScanlines remaining: " << (image_height - j) << ' ' << std::flush;
+            std::clog << "\rLinhas restantes: " << (image_height - j) << ' ' << std::flush;
             for (int i = 0; i < image_width; i++) {
                 auto pixel_center = pixel00_loc + (pixel_delta_u*i) + (pixel_delta_v*j);
                 auto ray_direction = pixel_center - camera_center;
                 ray r(camera_center, ray_direction);
 
-                point p(0,0,1);
-                sphere esfera(p, 0.5, vector(0,1,0));
-
-                vector pixel_color = ray_color(r,esfera);
+                vetor pixel_color = ray_color(r, *objetos[0]);
                 pixel_color.write_color(cout);
             }
         }

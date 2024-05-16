@@ -1,43 +1,39 @@
 #ifndef PLANEHEADER
 #define PLANEHEADER
 
-#include <iostream>
-#include <cmath>
+#include "Object.cpp"
 #include "Vector.cpp"
-#include "Point.cpp"
 #include "Ray.cpp"
 
-using namespace std;
+class plane : public object {
+private:
+    vetor normal;
 
-class plane
-{
 public:
-	vector p; // vetor ao invés de ponto para compatibilidade com operações
-	vector normal;
-	vector color;
+    // Construtor
+    plane(point origem, vetor& normal, vetor& color)
+        : object(origem, color), normal(normal) {}
 
-	plane(vector p, vector normal, vector color)
-	{
-		this->p = p;
-		this->normal = normal;
-		this->color = color;
-	}
-	
-	// intersessão: 
-		// retorna parâmetro do vetor ray.direction em que houve intersessão,
-		// ou inf
-	double hit(ray raio)
-	{
-		double t;
-		vector D = raio.direction;
-		vector O(raio.origin.getX(), raio.origin.getY(), raio.origin.getZ());
+    // Método para calcular a interseção com o plano
+    double hit(ray& ray) {
+        double t;
 
-		// divisão por zero com doubles retorna inf pela norma do c++: sem RTE
-		t = ( normal.produto_escalar((p-O)) / normal.produto_escalar(D) );
+        vetor D = ray.getDirection();
+        point O = ray.getOrigin();
 
-		return t;
-	}
+        // Verifica se o raio é paralelo ao plano
+        double denominator = this->normal.produto_escalar(D);
 
+        // Se o denominador for zero, o raio é paralelo ao plano, então não há interseção
+        if (std::abs(denominator) < 1e-6) {
+            return INFINITY;
+        }
+
+        // Calcula o parâmetro t da interseção
+        t = normal.produto_escalar(this->ponto - O) / denominator;
+
+        return t;
+    }
 };
 
 #endif

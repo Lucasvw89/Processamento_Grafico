@@ -53,19 +53,19 @@ public:
     }
 
 
-    inline point operator+(vector v1)
+    inline point operator+(vetor v1)
     {
         return point(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
     }
 
-    inline point operator-(vector v1)
+    inline point operator-(vetor v1)
     {
         return point(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
     }
 
-    inline vector operator-(point p1)
+    inline vetor operator-(point p1)
     {
-        return vector(this->getX() - p1.getX(), this->getY() - p1.getY(), this->getZ() - p1.getZ());
+        return vetor(this->getX() - p1.getX(), this->getY() - p1.getY(), this->getZ() - p1.getZ());
     }
 
     inline void operator=(point p1)

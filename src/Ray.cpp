@@ -12,17 +12,17 @@ class ray
 {
 public:
 	point origin; 
-	vector direction;
+	vetor direction;
 	
-	point get_origin(){
+	point getOrigin(){
 		return this->origin;
 	}
 
-	vector get_direction(){
+	vetor getDirection(){
 		return this->direction;
 	}
 
-	ray(point origin, vector direction)
+	ray(point origin, vetor direction)
 	{
 		this->origin = origin;
 		this->direction = direction;
