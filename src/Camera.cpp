@@ -2,6 +2,7 @@
 #define CAMRHEADER
 
 #include <iostream>
+#include <tuple>
 #include <vector>
 #include "Point.cpp"
 #include "Ray.cpp"
@@ -46,9 +47,9 @@ public:
         point p,
         point t,
         vetor u,
-        double d = 10.0,
+        double d = 1.0,
         double aspect_ratio = 16.0 / 9.0,
-        double focal_length=1.0,
+        double focal_length=0.2,
         double viewport_height = 2.0
     ) {
         this->position = p;
@@ -66,7 +67,7 @@ public:
     camera(){
     }
     void print() {
-        cout << "camera:" << endl;
+        cout << "Camera:" << endl;
         position.print();
         target.print();
         up.print();
@@ -75,17 +76,14 @@ public:
         U.print();
     }
 
-    vetor ray_color( ray& r, object& s) {
-        sphere* esfera = dynamic_cast<sphere*>(&s); // Tentativa de converter o objeto para uma esfera
-        if (esfera) {
-            if (esfera->hit_sphere(r)) {
-                return esfera->getColor();
-                std::clog<<"deuhit"<<std::endl;
-            }
+    double ray_color( ray& r, object& s) {
+        double t = s.intersect(r);
+        if (t > 0.0) {
+            return t;
         }
         vetor unit_direction = r.direction.normalizar();
         auto a = 0.5*(unit_direction.getY() + 1.0);
-        return vetor(1.0, 1.0, 1.0)*(1.0-a) + vetor(0.5, 0.7, 1.0)*a;
+        return INFINITY;
     }
 
 
@@ -115,9 +113,19 @@ public:
                 auto pixel_center = pixel00_loc + (pixel_delta_u*i) + (pixel_delta_v*j);
                 auto ray_direction = pixel_center - camera_center;
                 ray r(camera_center, ray_direction);
+                
+                tuple <int, double, vetor> pixel_info (0, 0, vetor(0,0,0));
 
-                vetor pixel_color = ray_color(r, *objetos[0]);
-                pixel_color.write_color(cout);
+                for (int k = 0; k < objetos.size(); k++){
+                    double t = ray_color(r, *objetos[k]);
+                    
+                    if (t != INFINITY) {
+                        if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0){
+                            pixel_info = make_tuple(k, t, objetos[k]->getColor());
+                        }
+                    }
+                }
+                get<2>(pixel_info).write_color(cout);
             }
         }
         std::clog << "\rDone.                 \n";

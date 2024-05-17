@@ -58,6 +58,17 @@ public:
         return point(v1.getX() + this->getX(), v1.getY() + this->getY(), v1.getZ() + this->getZ());
     }
 
+    inline point operator+(point p1)
+    {
+        return point(p1.getX() + this->getX(), p1.getY() + this->getY(), p1.getZ() + this->getZ());
+    }
+
+    inline point operator+(double h)
+    {
+        return point(h + this->getX(), h + this->getY(), h + this->getZ());
+    }
+
+
     inline point operator-(vetor v1)
     {
         return point(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());

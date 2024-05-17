@@ -15,24 +15,17 @@ public:
         : object(origem, color), normal(normal) {}
 
     // Método para calcular a interseção com o plano
-    double hit(ray& ray) {
+    double intersect(ray& ray) override {
         double t;
-
         vetor D = ray.getDirection();
         point O = ray.getOrigin();
 
-        // Verifica se o raio é paralelo ao plano
-        double denominator = this->normal.produto_escalar(D);
+        vetor plano_orig = vetor(this->getPonto().getX(), this->getPonto().getY(), this->getPonto().getZ());
+        vetor raio_orig = vetor(ray.getOrigin().getX(), ray.getOrigin().getY(), ray.getOrigin().getZ());
 
-        // Se o denominador for zero, o raio é paralelo ao plano, então não há interseção
-        if (std::abs(denominator) < 1e-6) {
-            return INFINITY;
-        }
+        t = normal.produto_escalar(plano_orig) - normal.produto_escalar(raio_orig)/ normal.produto_escalar(ray.getDirection());
 
-        // Calcula o parâmetro t da interseção
-        t = normal.produto_escalar(this->ponto - O) / denominator;
-
-        return t;
+		return t;
     }
 };
 

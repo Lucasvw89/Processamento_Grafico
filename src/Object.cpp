@@ -3,6 +3,7 @@
 
 #include "Point.cpp"
 #include "Vector.cpp"
+#include "Ray.cpp"
 
 class object {
 protected:
@@ -20,6 +21,8 @@ public:
     void setPonto(const point& ponto) { this->ponto = ponto; }
     point getPonto() const { return ponto; }
     vetor getColor() const { return color; }
+    virtual double intersect(ray &r) = 0;
+
 
     virtual ~object() {}
 };
