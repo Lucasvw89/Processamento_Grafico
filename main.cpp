@@ -15,7 +15,7 @@ int main() {
 
     //Sistema (x,z,y)
 
-    point p_esfera(0,0,-1);
+    point p_esfera(0,0,0);
     double r_esfera = 0.5;
     vetor v1(0, 0, 1);
     vetor cor (1, 0, 0);
@@ -25,7 +25,7 @@ int main() {
     point p2(0,0,0);
     point p3(1,0,0);
 
-    point ponto_plano(0,0,1);
+    point ponto_plano(1,-1,0);
     vetor normal_plano(0, 1, 0);
     
 
