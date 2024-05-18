@@ -10,19 +10,8 @@
 
 using namespace std;
 
-struct CameraConfig {
-    string point_of_origin;
-    string target;
-    string up_vector;
-    string focal_distance;
-    vector<string> objects;
-};
-
 int main() {
-
-
-
-    IMAGEM
+    //IMAGEM
     
     std::vector<object*> objetos;
 
