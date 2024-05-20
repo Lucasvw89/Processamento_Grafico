@@ -56,7 +56,7 @@ class vetor{
         Printa as coordenadas do vetor no terminal
         */
         void print(){
-            std::cout << "(" << this->x << ", " << this->y << ", " << this->z << ")" << std::endl;
+            std::clog << "<" << this->x << ", " << this->y << ", " << this->z << ">" << std::endl;
         }
 
         // Operações

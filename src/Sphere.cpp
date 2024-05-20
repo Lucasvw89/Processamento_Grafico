@@ -9,11 +9,12 @@
 
 class sphere : public object{
     public:
+        point center;
         double radius;
 
-        sphere(point center, double radius, vetor color) : object(center, color), radius(radius) {}
+        sphere(point center, double radius, vetor color) : object(color), radius(radius), center(center) {}
 
-        point getCenter() const { return this->ponto; }
+        point getCenter() const { return this->center; }
 
         double intersect(ray &r) override {
             double t;

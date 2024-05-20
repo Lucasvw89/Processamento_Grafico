@@ -7,19 +7,15 @@
 
 class object {
 protected:
-    point ponto;
     vetor color;
 
 public:
     // Construtor
-    object(const point& ponto, const vetor& color){
-        this->ponto = ponto;
+    object(const vetor& color){
         this->color = color;
     }
 
     void setColor(const vetor& color) { this->color = color; }
-    void setPonto(const point& ponto) { this->ponto = ponto; }
-    point getPonto() const { return ponto; }
     vetor getColor() const { return color; }
     virtual double intersect(ray &r) = 0;
 

@@ -7,6 +7,7 @@
 class triangle: private object {
 
 private:
+    point origem;
     point A;
     point B;
     point C;
@@ -15,7 +16,7 @@ private:
 public:
     // Construtor
     triangle(point origem, vetor& normal, vetor& color, point& A, point B, point C)
-        : object(origem, color), normal(normal), A(A), B(B), C(C) {}
+        : object(color), normal(normal), origem(origem), A(A), B(B), C(C) {}
 
 
     double intersect(ray& ray) override {
@@ -37,6 +38,13 @@ public:
 
 		return t;
     }
+    
+    //Getters
+    point getPonto() const { return this->origem; }
+    point getA() const { return this->A; }
+    point getB() const { return this->B; }
+    point getC() const { return this->C; }
+
 };
 
 #endif

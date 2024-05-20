@@ -94,7 +94,7 @@ public:
         point camera_center = this->position;
 
         // Vetores que apontam as extremidades da tela
-        vetor viewport_u = U * viewport_width;
+        vetor viewport_u = U * (viewport_width * -1);
         vetor viewport_v = V * (viewport_height * -1);
 
         // Vetores usados para calcular a posição do próximo pixel (ponto+(vetor*quantidade de pixels))

@@ -49,7 +49,7 @@ public:
     }
 
     void print(){
-        cout << "(" << this->x << ", " << this->y << ", " << this->z << ")" << "\n";
+        clog << "(" << this->x << ", " << this->y << ", " << this->z << ")" << "\n";
     }
 
 
