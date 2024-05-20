@@ -40,8 +40,8 @@ int main() {
     point target_cam(1,0.3,0);
     vetor up_cam(0,1,0);
 
-    point ponto_plano(1,0,0);
-    vetor normal_plano(1, 0, 0);
+    point ponto_plano(0,-1,0);
+    vetor normal_plano(0, 1, 0);
     
 
     vetor cor_plano(0, 0, 1);
@@ -61,8 +61,9 @@ int main() {
     objetos.push_back(&esfera4);
     objetos.push_back(&esfera5);
     objetos.push_back(&esfera6);
+    objetos.push_back(&plano);
 
-    camera cam(400, pos_cam, target_cam, up_cam);
+    camera cam(1920, pos_cam, target_cam, up_cam);
     cam.render(objetos);
 
 

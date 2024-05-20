@@ -18,8 +18,13 @@ public:
     double intersect(ray& ray) override {
         double t;
 
-        vetor plano_orig = vetor(this->getPonto().getX(), this->getPonto().getY(), this->getPonto().getZ());
-        vetor raio_orig = vetor(ray.getOrigin().getX(), ray.getOrigin().getY(), ray.getOrigin().getZ());
+        vetor plano_orig = vetor(this->getPonto().getX(),
+                                 this->getPonto().getY(),
+                                 this->getPonto().getZ());
+
+        vetor raio_orig = vetor(ray.getOrigin().getX(),
+                                ray.getOrigin().getY(),
+                                ray.getOrigin().getZ());
 
         t = (normal.produto_escalar(plano_orig) - normal.produto_escalar(raio_orig))/ normal.produto_escalar(ray.getDirection());
 
