@@ -3,8 +3,9 @@
 
 #include "Object.cpp"
 #include "Point.cpp"
+#include <cmath>
 
-class triangle: private object {
+class triangle: public object {
 
 private:
     point origem;
@@ -15,8 +16,13 @@ private:
 
 public:
     // Construtor
-    triangle(point origem, vetor& normal, vetor& color, point& A, point B, point C)
-        : object(color), normal(normal), origem(origem), A(A), B(B), C(C) {}
+    triangle(vetor& normal, vetor& color, point& A, point B, point C)
+        : object(color), normal(normal), A(A), B(B), C(C) 
+    {
+        this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
+                             (A.getY() + B.getY() + C.getY()) / 3,
+                             (A.getZ() + B.getZ() + C.getZ()) / 3);
+    }
 
 
     double intersect(ray& ray) override {
@@ -33,10 +39,29 @@ public:
         t = (normal.produto_escalar(plano_orig) - normal.produto_escalar(raio_orig))/ normal.produto_escalar(ray.getDirection());
 
         point P = ray.f(t);     // ponto que intersecta o plano
-        vetor v1 = B - A;
-        vetor v2 = C - A;
+        vetor v1 = B - A,
+              v2 = C - A,
+              v3 = P - A;
 
-		return t;
+        double d00 = v1.produto_escalar(v1),
+               d01 = v1.produto_escalar(v2),
+               d11 = v2.produto_escalar(v2),
+               d20 = v3.produto_escalar(v1),
+               d21 = v3.produto_escalar(v2);
+
+        double denom = d00 * d11 - d01 * d01;
+
+        double v = (d11 * d20 - d01 * d21) / denom;
+        double w = (d00 * d21 - d01 * d20) / denom;
+        double u = 1.0f - v - w;
+
+        if (v >= 0 && v <= 1 &&
+            w >= 0 && v <= 1 &&
+            u >= 0 && v <= 1)
+            return t;
+
+        else
+            return INFINITY;
     }
     
     //Getters
