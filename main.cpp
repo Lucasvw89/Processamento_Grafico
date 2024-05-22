@@ -20,9 +20,9 @@ int main() {
 
     colormap cmap;
 
-    objReader reader("quadrado.obj", cmap);
+    objReader reader("untitled.obj", cmap);
     
-    vector<object*> objs_list;
+    //vector<object> objs_list;
 
 
     point pos_cam(0,0,0);
@@ -36,11 +36,11 @@ int main() {
 
     // objs_list.push_back(&esfera);
 
-    mesh malha(reader.getTriangles());
+    vector<triangle> triangulos = reader.getTriangles();
 
-    objs_list.push_back(&malha);
+    //for (auto t : triangulos) objs_list.push_back(&t);
 
-    cam.render(objs_list);
+    cam.render(triangulos);
 
     return 0;
 }

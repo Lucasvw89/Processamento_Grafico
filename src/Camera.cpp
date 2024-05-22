@@ -7,6 +7,7 @@
 #include "Point.cpp"
 #include "Ray.cpp"
 #include "Sphere.cpp"
+#include "Triangle.cpp"
 
 using namespace std;
 
@@ -85,7 +86,7 @@ public:
         return INFINITY;
     }
 
-    void render(vector<object *> objetos) {
+    void render(vector<triangle>& objetos) {
         int image_width = this->width;
         int image_height = int(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
@@ -119,11 +120,11 @@ public:
                 tuple<int, double, vetor> pixel_info(0, 0, vetor(0, 0, 0));
 
                 for (int k = 0; k < objetos.size(); k++) {
-                    double t = ray_color(r, *objetos[k]);
+                    double t = ray_color(r, objetos[k]);
                     
                     if (t != INFINITY) {
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
-                            pixel_info = make_tuple(k, t, objetos[k]->getColor());
+                            pixel_info = make_tuple(k, t, objetos[k].getColor());
                         }
                     }
                 }
