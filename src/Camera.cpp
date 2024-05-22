@@ -79,7 +79,7 @@ public:
 
     double ray_color(ray& r, object& s) {
         double t = s.intersect(r);
-        if (t > 0.0) {
+        if (t > 0.0 && t != INFINITY) {
             return t;
         }
         return INFINITY;
@@ -128,6 +128,7 @@ public:
                     }
                 }
                 get<2>(pixel_info).write_color(cout);
+                // std::clog << get<2>(pixel_info) << std::endl;
             }
         }
         std::clog << "\rDone.                 \n";

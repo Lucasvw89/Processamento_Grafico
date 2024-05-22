@@ -20,8 +20,19 @@ public:
         : object(color), normal(normal), A(A), B(B), C(C) 
     {
         this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
-                             (A.getY() + B.getY() + C.getY()) / 3,
-                             (A.getZ() + B.getZ() + C.getZ()) / 3);
+                            (A.getY() + B.getY() + C.getY()) / 3,
+                            (A.getZ() + B.getZ() + C.getZ()) / 3);
+    }
+
+    // Construtor sem cor
+    triangle(vetor& normal, point& A, point B, point C)
+        : object(color), normal(normal), A(A), B(B), C(C) 
+    {
+        this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
+                            (A.getY() + B.getY() + C.getY()) / 3,
+                            (A.getZ() + B.getZ() + C.getZ()) / 3);
+        vetor temp = vetor(1, 1, 1);
+        this->color = temp;
     }
 
 

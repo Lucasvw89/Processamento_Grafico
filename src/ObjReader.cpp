@@ -8,6 +8,7 @@
 #include <sstream>
 #include "Vector.cpp"
 #include "Point.cpp"
+#include "Triangle.cpp"
 
 struct Face{
     int verticeIndice[3];
@@ -22,8 +23,13 @@ class objReader {
     std::vector<point> vertices;
     std::vector<vetor> normals;
     std::vector<Face> faces;
+    std::vector<triangle> triangles;
 
     public:
+        //Getters
+        std::vector<triangle> getTriangles(){
+            return this->triangles;
+        }
         
         objReader(string filename) {
 
@@ -74,7 +80,17 @@ class objReader {
                     faces.push_back(face);
                 }
             }
-
+            
+            for (int i = 0; i < faces.size(); i++) {
+                point a = vertices[faces[i].verticeIndice[0]];
+                point b = vertices[faces[i].verticeIndice[1]];
+                point c = vertices[faces[i].verticeIndice[2]];
+                vetor ab = b - a;
+                vetor ac = c - a;
+                vetor normal = ac.produto_vetorial(ab).normalizar();
+                triangle tri(normal, vertices[faces[i].verticeIndice[0]], vertices[faces[i].verticeIndice[1]], vertices[faces[i].verticeIndice[2]]);
+                triangles.push_back(tri);
+            };
             file.close();
         };
 

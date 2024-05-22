@@ -11,6 +11,7 @@ protected:
 
 public:
     // Construtor
+    object(){};
     object(const vetor& color){
         this->color = color;
     }
