@@ -26,9 +26,9 @@ int main() {
 
 
     point pos_cam(0,0,0);
-    point target_cam(0.2,0,0);
+    point target_cam(0,0,0);
     vetor up_cam(0,1,0);
-    camera cam(400, point(5,0,0), point(0,0,0), vetor(0,1,0), 16.0/9.0, 1.5);
+    camera cam(1080, point(3,-1,5), point(0,0,0), vetor(0,1,0), 16.0/9.0, 1.5);
 
     // point p = point(0,0,0);
     // double d = 10.0;

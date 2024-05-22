@@ -111,11 +111,12 @@ public:
         std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
 
         for (int j = 0; j < image_height; j++) {
-            //std::clog << "\rLinhas restantes: " << (image_height - j) << ' ' << std::flush;
+            std::clog << "\rLinhas restantes: " << (image_height - j) << ' ' << std::flush;
             for (int i = 0; i < image_width; i++) {
                 auto pixel_center = pixel00_loc + pixel_delta_u * i + pixel_delta_v * j;
                 auto ray_direction = pixel_center - camera_center;
-                ray r(camera_center, ray_direction.normalizar());
+                ray_direction = ray_direction.normalizar();
+                ray r(camera_center, ray_direction);
                 
                 tuple<int, double, vetor> pixel_info(0, 0, vetor(0, 0, 0));
 
@@ -123,8 +124,11 @@ public:
                     double t = ray_color(r, objetos[k]);
                     
                     if (t != INFINITY) {
+                        vetor curr = objetos[k].getNormal().normalizar();
+                        double cos = abs(ray_direction.produto_escalar(curr));
+                        vetor cor = vetor(1,1,1) * cos;
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
-                            pixel_info = make_tuple(k, t, objetos[k].getColor());
+                            pixel_info = make_tuple(k, t, cor);
                         }
                     }
                 }

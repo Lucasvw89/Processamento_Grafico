@@ -22,6 +22,8 @@ public:
         this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
                             (A.getY() + B.getY() + C.getY()) / 3,
                             (A.getZ() + B.getZ() + C.getZ()) / 3);
+        this->normal = (B-C).produto_vetorial(C-A);
+        this->normal = this->normal.normalizar();
     }
 
     // Construtor sem cor
@@ -33,6 +35,8 @@ public:
                             (A.getZ() + B.getZ() + C.getZ()) / 3);
         vetor temp = vetor(1, 1, 1);
         this->color = temp;
+        this->normal = (B-C).produto_vetorial(C-A);
+        this->normal = this->normal.normalizar();
     }
 
 
@@ -80,6 +84,7 @@ public:
     point getA() const { return this->A; }
     point getB() const { return this->B; }
     point getC() const { return this->C; }
+    vetor getNormal() { return this->normal; }
 
 };
 

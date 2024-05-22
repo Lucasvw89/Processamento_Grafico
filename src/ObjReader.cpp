@@ -68,7 +68,7 @@ class objReader {
                     vertex = point(x, y, z);
                     vertices.push_back(vertex);
 
-                    vertex.print();
+                    // vertex.print();
                 } else if (prefix == "vn") {
                     //Lê os vetores normais
                     double x, y, z;
@@ -76,7 +76,7 @@ class objReader {
                     iss >> x >> y >> z;
                     
                     normal = vetor(x, y, z);
-                    normal.print();
+                    // normal.print();
                     normals.push_back(normal);
                 } else if (prefix == "f") {
                     Face face;
