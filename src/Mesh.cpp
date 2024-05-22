@@ -10,11 +10,11 @@ class mesh : public object{
         std::vector<triangle> triangles;
     public:
         mesh(){
-            vetor cor(255,255,255);
+            vetor cor(0,1,0);
             this->color = cor;
         };
-        mesh(std::vector<triangle> triangles, vetor color):
-            triangles(triangles), object(color){};
+        mesh(std::vector<triangle> triangles):
+            triangles(triangles), object(triangles[0].getColor()){};
         
         double intersect (ray &r) override {
             double dist;

@@ -11,12 +11,16 @@
 #include "src/Triangle.cpp"
 #include "src/ObjReader.cpp"
 #include "src/Mesh.cpp"
+#include "src/Colormap.cpp"
 
 using namespace std;
 
 int main() {
-    
-    objReader reader("input.obj");
+    ios::sync_with_stdio(false); cin.tie(NULL);
+
+    colormap cmap;
+
+    objReader reader("quadrado.obj", cmap);
     
     vector<object*> objs_list;
 
@@ -32,14 +36,11 @@ int main() {
 
     // objs_list.push_back(&esfera);
 
-
-    mesh malha;
-    malha.setTriangles(reader.getTriangles());
+    mesh malha(reader.getTriangles());
 
     objs_list.push_back(&malha);
 
     cam.render(objs_list);
-    
 
     return 0;
 }

@@ -1,0 +1,20 @@
+# example.mtl
+
+newmtl Red
+Ka 1.000 0.000 0.000  # Ambient color (not always used)
+Kd 1.000 0.000 0.000  # Diffuse color (the primary color)
+Ks 0.500 0.500 0.500  # Specular color (highlights)
+Ns 200.000            # Shininess
+
+newmtl Green
+Ka 0.000 1.000 0.000
+Kd 0.000 1.000 0.000
+Ks 0.500 0.500 0.500
+Ns 200.000
+
+newmtl Blue
+Ka 0.000 0.000 1.000
+Kd 0.000 0.000 1.000
+Ks 0.500 0.500 0.500
+Ns 200.000
+

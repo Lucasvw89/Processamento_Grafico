@@ -9,10 +9,12 @@
 #include "Vector.cpp"
 #include "Point.cpp"
 #include "Triangle.cpp"
+#include "Colormap.cpp"
 
 struct Face{
     int verticeIndice[3];
     int normalIndice[3];
+    vetor cor;
 };
 
 class objReader {
@@ -24,6 +26,7 @@ class objReader {
     std::vector<vetor> normals;
     std::vector<Face> faces;
     std::vector<triangle> triangles;
+    vetor curColor; // processa um objeto por vez, guarda nessa variável
 
     public:
         //Getters
@@ -31,7 +34,7 @@ class objReader {
             return this->triangles;
         }
         
-        objReader(string filename) {
+        objReader(string filename, colormap& cmap) {
 
             // Abre o arquivo
             file.open(filename);
@@ -41,13 +44,22 @@ class objReader {
             }
 
             // Leitura do arquivo
-            std::string line;
+            std::string line,mtlfile, colorname;
             while (std::getline(file, line)){
                 std::istringstream iss(line);       //É um std::cin, mas de objetos
-                std::string prefix;                 //Vai armazenar a primeira palavra (identificador da linha)
+                std::string prefix; //Vai armazenar a primeira palavra (identificador da linha)
                 iss >> prefix;
+                
+                if (prefix == "usemtl")
+                {
+                    iss >> colorname;
 
-                if (prefix == "v") {
+                    cerr << "colorname: " << colorname << endl;
+                    
+                    curColor = cmap.getColor(colorname);
+
+                }
+                else if (prefix == "v") {
                     //Lê os vértices    
                     double x, y, z;
                     point vertex;
@@ -73,6 +85,8 @@ class objReader {
                         int _;
                         iss >> face.verticeIndice[i] >> slash >> _ >> slash >> face.normalIndice[i];
                         
+                        // cor do objeto atual
+                        face.cor = curColor;
                         //Os arquivos OBJ utilizam a notação de 1 a N, então é necessário subtrair 1 de cada indice
                         face.verticeIndice[i]--;
                         face.normalIndice[i]--;
@@ -88,7 +102,8 @@ class objReader {
                 vetor ab = b - a;
                 vetor ac = c - a;
                 vetor normal = ac.produto_vetorial(ab).normalizar();
-                triangle tri(normal, vertices[faces[i].verticeIndice[0]], vertices[faces[i].verticeIndice[1]], vertices[faces[i].verticeIndice[2]]);
+                // cor passada como argumento
+                triangle tri(normal, faces[i].cor, vertices[faces[i].verticeIndice[0]], vertices[faces[i].verticeIndice[1]], vertices[faces[i].verticeIndice[2]]);
                 triangles.push_back(tri);
             };
             file.close();
