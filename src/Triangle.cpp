@@ -3,7 +3,10 @@
 
 #include "Object.cpp"
 #include "Point.cpp"
-#include <cmath>
+#include <math.h>
+
+# define M_PI 3.14159265358979323846  /* pi */
+# define ANGLE_TO_RAD M_PI/180        /* Valor usado na conversão de grau para radiano */
 
 class triangle: public object {
 
@@ -44,8 +47,8 @@ public:
         double t;
 
         vetor plano_orig = vetor(this->getPonto().getX(),
-                                 this->getPonto().getY(),
-                                 this->getPonto().getZ());
+                                this->getPonto().getY(),
+                                this->getPonto().getZ());
 
         vetor raio_orig = vetor(ray.getOrigin().getX(),
                                 ray.getOrigin().getY(),
@@ -55,14 +58,14 @@ public:
 
         point P = ray.f(t);     // ponto que intersecta o plano
         vetor v1 = B - A,
-              v2 = C - A,
-              v3 = P - A;
+                v2 = C - A,
+                v3 = P - A;
 
         double d00 = v1.produto_escalar(v1),
-               d01 = v1.produto_escalar(v2),
-               d11 = v2.produto_escalar(v2),
-               d20 = v3.produto_escalar(v1),
-               d21 = v3.produto_escalar(v2);
+                d01 = v1.produto_escalar(v2),
+                d11 = v2.produto_escalar(v2),
+                d20 = v3.produto_escalar(v1),
+                d21 = v3.produto_escalar(v2);
 
         double denom = d00 * d11 - d01 * d01;
 
@@ -77,6 +80,73 @@ public:
 
         else
             return INFINITY;
+    }
+
+    void rotacao(double angle, char eixo) {
+        double matrix[3][3] = {0};
+
+        double rad = angle * ANGLE_TO_RAD;
+
+        double cosAngulo = cos(rad);
+        double sinAngulo = sin(rad);
+
+        if (eixo == 'X' || eixo == 'x') {
+            // Matriz de rotação no eixo X
+            matrix[0][0] = 1; matrix[0][1] = 0;         matrix[0][2] = 0;
+            matrix[1][0] = 0; matrix[1][1] = cosAngulo; matrix[1][2] = -sinAngulo;
+            matrix[2][0] = 0; matrix[2][1] = sinAngulo; matrix[2][2] = cosAngulo;
+        } else if (eixo == 'Y' || eixo == 'y') {
+            // Matriz de rotação no eixo Y
+            matrix[0][0] = cosAngulo; matrix[0][1] = 0; matrix[0][2] = sinAngulo;
+            matrix[1][0] = 0;         matrix[1][1] = 1; matrix[1][2] = 0;
+            matrix[2][0] = -sinAngulo; matrix[2][1] = 0; matrix[2][2] = cosAngulo;
+        } else if (eixo == 'Z' || eixo == 'z') {
+            // Matriz de rotação no eixo Z
+            matrix[0][0] = cosAngulo; matrix[0][1] = -sinAngulo; matrix[0][2] = 0;
+            matrix[1][0] = sinAngulo; matrix[1][1] = cosAngulo;  matrix[1][2] = 0;
+            matrix[2][0] = 0;         matrix[2][1] = 0;          matrix[2][2] = 1;
+        } else {
+            return; // Eixo inválido
+        }
+
+        this->A = this->A * matrix;
+        this->B = this->B * matrix;
+        this->C = this->C * matrix;
+
+        this->origem = this->calcularOrigem();
+        this->normal = (B - C).produto_vetorial(C - A).normalizar();
+    }
+
+    void translacao(double dx, double dy, double dz) {
+        this->A = this->A + point(dx, dy, dz);
+        this->B = this->B + point(dx, dy, dz);
+        this->C = this->C + point(dx, dy, dz);
+        this->origem = calcularOrigem();
+    }
+
+    void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY) {
+        double matrix[3][3];
+
+        // Matriz de cisalhamento
+        // | 1     shXY  shXZ |
+        // | shYX  1     shYZ |
+        // | shZX  shZY  1    |
+        matrix[0][0] = 1;   matrix[0][1] = shXY; matrix[0][2] = shXZ;
+        matrix[1][0] = shYX; matrix[1][1] = 1;   matrix[1][2] = shYZ;
+        matrix[2][0] = shZX; matrix[2][1] = shZY; matrix[2][2] = 1;
+
+        this->A = this->A * matrix;
+        this->B = this->B * matrix;
+        this->C = this->C * matrix;
+
+        this->origem = calcularOrigem();
+        this->normal = (B-C).produto_vetorial(C-A).normalizar();
+    }
+
+    point calcularOrigem() {
+        return point((A.getX() + B.getX() + C.getX()) / 3,
+                    (A.getY() + B.getY() + C.getY()) / 3,
+                    (A.getZ() + B.getZ() + C.getZ()) / 3);
     }
     
     //Getters

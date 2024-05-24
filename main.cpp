@@ -20,23 +20,19 @@ int main() {
 
     colormap cmap;
 
-    objReader reader("./input/piramide_de_ryei.obj", cmap);
+    objReader reader("./input/cubo.obj", cmap);
 
 
     point pos_cam(0,0,0);
     point target_cam(0,0,0);
     vetor up_cam(0,1,0);
-    camera cam(400, point(3,-2,5), point(0,0,0), vetor(0,1,0), 16.0/9.0, 1.5);
-
-    point centro_sfer = point(0,1,0);
-    vetor cor = vetor(1,1,1);
-    sphere bolinha_maluka(centro_sfer, 3, cor);
-
-    vetor normali = vetor(0,1,0);
-
-    plane planinho(point(0,1,0), normali, cor);
+    camera cam(400, point(3,0,5), point(0,0,0), vetor(0,1,0), 16.0/9.0, 1.5);
 
     vector<object*> triangulos = reader.getTriangles();
+    
+    for (int i = 0; i < triangulos.size(); i++){
+        triangulos[i]->rotacao(45, 'Y');
+    }
 
     cam.render(triangulos);
 

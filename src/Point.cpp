@@ -79,6 +79,14 @@ public:
         return vetor(this->getX() - p1.getX(), this->getY() - p1.getY(), this->getZ() - p1.getZ());
     }
 
+    point operator*(const double matrix[3][3]) const {
+        double newX = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
+        double newY = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
+        double newZ = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
+
+        return point(newX, newY, newZ);
+    }
+
     inline void operator=(point p1)
     {
         this->setX(p1.getX());

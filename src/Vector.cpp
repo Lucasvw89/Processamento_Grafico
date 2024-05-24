@@ -130,10 +130,22 @@ class vetor{
         {
             return vetor(this->getX() - v1.getX(), this->getY() - v1.getY(), this->getZ() - v1.getZ());
         }
+        inline vetor operator-(double t1)
+        {
+            return vetor(this->getX() - t1, this->getY() - t1, this->getZ() - t1);
+        }
 
         inline vetor operator*(double t1)
         {
             return vetor(t1 * this->getX(), t1 * this->getY(), t1 * this->getZ());
+        }
+
+        vetor operator*(const double matrix[3][3]) const {
+            double newX = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
+            double newY = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
+            double newZ = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
+
+            return vetor(newX, newY, newZ);
         }
 
         inline vetor operator/(double t1)
