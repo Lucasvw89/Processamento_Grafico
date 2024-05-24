@@ -29,7 +29,7 @@ public:
 
     // Getters
     point getPonto() const { return this->ponto; }
-    vetor getNormal() const { return this->normal; }
+    virtual vetor getNormal() override { return this->normal; }
 };
 
 #endif

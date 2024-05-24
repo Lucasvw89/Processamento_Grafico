@@ -8,6 +8,10 @@
 #include "Ray.cpp"
 
 class sphere : public object{
+    private:
+        double ta;
+        ray* ra;
+
     public:
         point center;
         double radius;
@@ -35,9 +39,17 @@ class sphere : public object{
             else{
                 t = -1;
             }
+            this->ra = &r;
+            this->ta = t;
+            
             return t;
             
         }
+
+        virtual vetor getNormal() override {
+            point ponto_intersecao = ra->f(this->ta);
+            return (ponto_intersecao - this->center).normalizar();
+        };
 
         // double intersect(ray &r) override {
         //     std::clog << "ENTROU AQUI" << std::endl;

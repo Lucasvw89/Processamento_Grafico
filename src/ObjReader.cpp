@@ -25,12 +25,12 @@ class objReader {
     std::vector<point> vertices;
     std::vector<vetor> normals;
     std::vector<Face> faces;
-    std::vector<triangle> triangles;
+    std::vector<object*> triangles;
     vetor curColor; // processa um objeto por vez, guarda nessa variável
 
     public:
         //Getters
-        std::vector<triangle> getTriangles(){
+        std::vector<object*> getTriangles(){
             return this->triangles;
         }
         
@@ -103,8 +103,8 @@ class objReader {
                 vetor ac = c - a;
                 vetor normal = ac.produto_vetorial(ab).normalizar();
                 // cor passada como argumento
-                triangle tri(normal, faces[i].cor, vertices[faces[i].verticeIndice[0]], vertices[faces[i].verticeIndice[1]], vertices[faces[i].verticeIndice[2]]);
-                triangles.push_back(tri);
+                triangle* tri_pointer = new triangle(normal, faces[i].cor, vertices[faces[i].verticeIndice[0]], vertices[faces[i].verticeIndice[1]], vertices[faces[i].verticeIndice[2]]);
+                triangles.push_back(tri_pointer);
             };
             file.close();
         };

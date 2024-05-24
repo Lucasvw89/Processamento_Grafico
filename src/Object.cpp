@@ -19,6 +19,7 @@ public:
     void setColor(const vetor& color) { this->color = color; }
     vetor getColor() const { return color; }
     virtual double intersect(ray &r) = 0;
+    virtual vetor getNormal() = 0;
 
 
     virtual ~object() {}
