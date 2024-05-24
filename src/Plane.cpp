@@ -27,6 +27,45 @@ public:
 		return t;
     }
 
+    void translacao(double dx, double dy, double dz){
+        this->ponto = this->ponto + point(dx, dy, dz);
+    };
+
+    void rotacao(double angle, char eixo) {
+        double matrix[3][3];
+        double rad = angle * ANGLE_TO_RAD;
+        double cosAngulo = cos(rad);
+        double sinAngulo = sin(rad);
+
+        if (eixo == 'X' || eixo == 'x') {
+            // Matriz de rotação no eixo X
+            matrix[0][0] = 1; matrix[0][1] = 0;         matrix[0][2] = 0;
+            matrix[1][0] = 0; matrix[1][1] = cosAngulo; matrix[1][2] = -sinAngulo;
+            matrix[2][0] = 0; matrix[2][1] = sinAngulo; matrix[2][2] = cosAngulo;
+        } else if (eixo == 'Y' || eixo == 'y') {
+            // Matriz de rotação no eixo Y
+            matrix[0][0] = cosAngulo; matrix[0][1] = 0; matrix[0][2] = sinAngulo;
+            matrix[1][0] = 0;         matrix[1][1] = 1; matrix[1][2] = 0;
+            matrix[2][0] = -sinAngulo; matrix[2][1] = 0; matrix[2][2] = cosAngulo;
+        } else if (eixo == 'Z' || eixo == 'z') {
+            // Matriz de rotação no eixo Z
+            matrix[0][0] = cosAngulo; matrix[0][1] = sinAngulo; matrix[0][2] = 0;
+            matrix[1][0] = -sinAngulo; matrix[1][1] = cosAngulo;  matrix[1][2] = 0;
+            matrix[2][0] = 0;         matrix[2][1] = 0;          matrix[2][2] = 1;
+        } else {
+            // Se o eixo for inválido, não faz nada
+            return;
+        }
+
+        // Aplicando a matriz de rotação à normal do plano
+        this->normal = this->normal * matrix;
+        this->normal = this->normal.normalizar();
+    }
+
+
+
+    void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY){return;};
+
     // Getters
     point getPonto() const { return this->ponto; }
     virtual vetor getNormal() override { return this->normal; }

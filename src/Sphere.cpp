@@ -51,14 +51,12 @@ class sphere : public object{
             return (ponto_intersecao - this->center).normalizar();
         };
 
-        // double intersect(ray &r) override {
-        //     std::clog << "ENTROU AQUI" << std::endl;
-        //     vetor oc = this->getCenter() - r.origin;
-        //     auto a = r.direction.produto_escalar(r.direction);
-        //     auto b = -2.0 * r.direction.produto_escalar(oc);
-        //     auto c = oc.produto_escalar(oc) - radius*radius;
-        //     auto discriminant = b*b - 4*a*c;
-            
-        // }      
+        void translacao(double dx, double dy, double dz){
+            this->center = this->center + point(dx, dy, dz);
+        }
+
+
+        void rotacao(double angle, char eixo){};
+        void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY){};
 };
 #endif
