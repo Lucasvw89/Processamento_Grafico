@@ -1,6 +1,6 @@
 # Blender 4.0.2
 # www.blender.org
-mtllib untitled.mtl
+mtllib cubo.mtl
 o Cube
 v 1.000000 1.000000 -1.000000
 v 1.000000 -1.000000 -1.000000

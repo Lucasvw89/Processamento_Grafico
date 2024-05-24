@@ -18,14 +18,16 @@ class colormap {
 public:
     map<string, vetor> mp;
 
-    colormap(){
+    colormap(){};
+
+    colormap(string input){
 
         // construtor: lê arquivo cores.mtl e guarda valores RGB associados a cada nome
 
         // OBS: atualmente está atribuindo valores RGB baseados no campo "Ka" do arquivo mtl
         // é possível que em entregas futuras, os outros atributos também serão usados
 
-        std::ifstream mtlFile("cores.mtl");
+        std::ifstream mtlFile(input);
 
         if (!mtlFile.is_open()) {
             std::cerr << "erro abrindo arquivo cores.mtl\n";
@@ -39,11 +41,11 @@ public:
 
             if (keyword == "newmtl") {
                 iss >> currentMaterial;
-            } else if (keyword == "Ka") {
-                double kaR, kaG, kaB;
-                iss >> kaR >> kaG >> kaB;
+            } else if (keyword == "Kd") {
+                double kdR, kdG, kdB;
+                iss >> kdR >> kdG >> kdB;
                 if (!currentMaterial.empty()) {
-                    mp[currentMaterial] = vetor(kaR, kaG, kaB);
+                    mp[currentMaterial] = vetor(kdR, kdG, kdB);
                 }
             }
         }

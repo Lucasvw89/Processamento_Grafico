@@ -27,6 +27,7 @@ class objReader {
     std::vector<Face> faces;
     std::vector<object*> triangles;
     vetor curColor; // processa um objeto por vez, guarda nessa variável
+    colormap cmap;
 
     public:
         //Getters
@@ -44,17 +45,21 @@ class objReader {
             }
 
             // Leitura do arquivo
-            std::string line,mtlfile, colorname;
+            std::string line,mtlfile, colorname, filename_mtl;
             while (std::getline(file, line)){
                 std::istringstream iss(line);       //É um std::cin, mas de objetos
                 std::string prefix; //Vai armazenar a primeira palavra (identificador da linha)
                 iss >> prefix;
                 
-                if (prefix == "usemtl")
+                if (prefix == "mtllib"){
+                    iss >> filename_mtl;
+                    
+                    cmap = colormap("./input/"+filename_mtl);
+
+                }
+                else if (prefix == "usemtl")
                 {
                     iss >> colorname;
-
-                    cerr << "colorname: " << colorname << endl;
                     
                     curColor = cmap.getColor(colorname);
 

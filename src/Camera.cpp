@@ -126,7 +126,7 @@ public:
                     if (t != INFINITY) {
                         vetor curr = objetos[k]->getNormal().normalizar();
                         double cos = abs(W.produto_escalar(curr));
-                        vetor cor = vetor(1,1,1) * cos;
+                        vetor cor = objetos[k]->getColor() * cos;
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
                             pixel_info = make_tuple(k, t, cor);
                         }
