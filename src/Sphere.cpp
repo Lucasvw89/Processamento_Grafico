@@ -18,12 +18,12 @@ class sphere : public object{
 
         sphere(point center, double radius, vetor color) : object(color), radius(radius), center(center) {}
 
-        point getCenter() const { return this->center; }
+        point getPonto() override { return this->center; }
 
         double intersect(ray &r) override {
             double t;
 
-            vetor oc = (r.origin) - (this->getCenter());
+            vetor oc = (r.origin) - (this->getPonto());
             double a = r.direction.produto_escalar(r.direction);
             double b = 2.0 * oc.produto_escalar(r.direction);
             double c = oc.produto_escalar(oc) - (this->radius * this->radius);
@@ -55,8 +55,7 @@ class sphere : public object{
             this->center = this->center + point(dx, dy, dz);
         }
 
-
-        void rotacao(double angle, char eixo){};
+        void rotacao(double angle, char eixo, point centroide){};
         void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY){};
 };
 #endif

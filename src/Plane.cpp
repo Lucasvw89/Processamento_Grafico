@@ -31,7 +31,11 @@ public:
         this->ponto = this->ponto + point(dx, dy, dz);
     };
 
-    void rotacao(double angle, char eixo) {
+    void rotacao(double angle, char eixo, point centroide) {
+        point ponto_temp = this->ponto;
+
+        this->translacao(-centroide.getX(), -centroide.getY(), -centroide.getZ());
+
         double matrix[3][3];
         double rad = angle * ANGLE_TO_RAD;
         double cosAngulo = cos(rad);
@@ -60,6 +64,8 @@ public:
         // Aplicando a matriz de rotação à normal do plano
         this->normal = this->normal * matrix;
         this->normal = this->normal.normalizar();
+
+        this->translacao(centroide.getX(), centroide.getY(), centroide.getZ());
     }
 
 

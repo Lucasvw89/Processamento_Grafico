@@ -82,7 +82,10 @@ public:
             return INFINITY;
     }
 
-    void rotacao(double angle, char eixo) {
+    void rotacao(double angle, char eixo, point centroide) {
+
+        this->translacao(-centroide.getX(), -centroide.getY(), -centroide.getZ());
+
         double matrix[3][3] = {0};
 
         double rad = angle * ANGLE_TO_RAD;
@@ -115,6 +118,8 @@ public:
 
         this->origem = this->calcularOrigem();
         this->normal = (B - C).produto_vetorial(C - A).normalizar();
+
+        this->translacao(centroide.getX(), centroide.getY(), centroide.getZ());
     }
 
     void translacao(double dx, double dy, double dz) {
@@ -150,7 +155,7 @@ public:
     }
     
     //Getters
-    point getPonto() const { return this->origem; }
+    point getPonto() override { return this->origem; }
     point getA() const { return this->A; }
     point getB() const { return this->B; }
     point getC() const { return this->C; }
