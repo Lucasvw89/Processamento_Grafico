@@ -130,7 +130,8 @@ public:
                         vetor normal = objetos[k]->getNormal().normalizar();
                         vetor objeto_color = objetos[k]->getColor();
                         
-                        vetor final_color = objeto_color * ambient_light; // componente ambiente
+                        // input define Ka discriminando por cor (Kar, Kag, Kab), aqui só usa o primeiro valor da tripla
+                        vetor final_color = objetos[k]->getKa().getX() * ambient_light; // componente ambiente
                         
                         for (const auto& light : lights) {
                             vetor light_dir = (light.getPosition() - intersection).normalizar();
@@ -139,10 +140,12 @@ public:
                             
                             // Componente difusa
                             double diff = std::max(light_dir.produto_escalar(normal), 0.0);
-                            final_color = final_color + (objeto_color * light.getColor() * diff);
+                            // lógica semelhante
+                            final_color = final_color + (objetos[k]->getKd().getX() * light.getColor() * diff);
                             
                             // Componente especular
                             double spec = pow(std::max(view_dir.produto_escalar(reflect_dir), 0.0), objetos[k]->getShininess());
+
                             final_color = final_color + (light.getColor() * spec);
                         }
                         
