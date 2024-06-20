@@ -27,6 +27,12 @@ public:
     virtual void translacao(double dx, double dy, double dz) = 0;
     virtual void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY) = 0;
 
+    virtual vetor getKd() = 0;
+    virtual  vetor getKs() = 0;
+    virtual vetor getKe() = 0;
+    virtual vetor getKa() = 0;
+    virtual double getNi() = 0;
+    virtual double getD() = 0;
 
     virtual ~object() {}
 };
