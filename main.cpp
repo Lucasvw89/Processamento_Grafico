@@ -67,23 +67,22 @@ int main() {
     point pos_cam(0,0,0);
     point target_cam(0,0,0);
     vetor up_cam(0,1,0);
-    camera cam(400, point(6,2,2), point(0,0,0), vetor(0,1,0), 16.0/9.0, 1);
+    camera cam(1080, point(6,2,2), point(0,0,0), vetor(0,1,0), 16.0/9.0, 1);
 
     point origem_plano(0,0,0);
     vetor normal_plano(0,1,0);
     vetor cor(0,1,0);
-    sphere esfera(origem_plano, 0.5, cor);
+    // sphere esfera(origem_plano, 0.5, cor);
     
     vector<object*> triangulos = reader.getTriangles();
+    vector<light> lts;
+    point lt_pos(6,2,0);
+    vetor lt_color(0.4,0.4,0.4);
+    light lt(lt_pos,lt_color);
+    lts.push_back(lt);
 
-    translacao(triangulos, 0, 2, 0);
-
-    rotacao(triangulos, 40, 'x');
-    rotacao(triangulos, 40, 'y');
-
-    cisalhamento(triangulos, 0, 0, 0, 1, 0, 0);
-
-    cam.render(triangulos);
+    vetor ambiente_color(0.1,0.1,0.1);
+    cam.render(triangulos, lts, ambiente_color);
 
     return 0;
 }

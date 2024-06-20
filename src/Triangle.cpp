@@ -17,31 +17,34 @@ private:
     point C;
     vetor normal;
 
+    vetor kd;  // Difuso
+    vetor ks;  // Specular
+    vetor ke;  // Emissivo
+    vetor ka;  // Ambiente
+    double ns; // Brilho
+    double ni; // Índice de refração
+    double d;  // Opacidade
+
 public:
     // Construtor
-    triangle(vetor& normal, vetor& color, point& A, point B, point C)
-        : object(color), normal(normal), A(A), B(B), C(C) 
+    triangle(vetor& normal, point& A, point B, point C, vetor& kd, vetor& ks, vetor& ke, vetor& ka, double ns, double ni, double d)
+        : object(ka), normal(normal), A(A), B(B), C(C), kd(kd), ks(ks), ke(ke), ka(ka), ns(ns), ni(ni), d(d)
     {
         this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
                             (A.getY() + B.getY() + C.getY()) / 3,
                             (A.getZ() + B.getZ() + C.getZ()) / 3);
-        this->normal = (B-C).produto_vetorial(C-A);
-        this->normal = this->normal.normalizar();
+        this->normal = (B-C).produto_vetorial(C-A).normalizar();
     }
 
     // Construtor sem cor
     triangle(vetor& normal, point& A, point B, point C)
-        : object(color), normal(normal), A(A), B(B), C(C) 
+        : object(vetor(1, 1, 1)), normal(normal), A(A), B(B), C(C)
     {
         this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
                             (A.getY() + B.getY() + C.getY()) / 3,
                             (A.getZ() + B.getZ() + C.getZ()) / 3);
-        vetor temp = vetor(1, 1, 1);
-        this->color = temp;
-        this->normal = (B-C).produto_vetorial(C-A);
-        this->normal = this->normal.normalizar();
+        this->normal = (B-C).produto_vetorial(C-A).normalizar();
     }
-
 
     double intersect(ray& ray) override {
         double t;
@@ -58,14 +61,14 @@ public:
 
         point P = ray.f(t);     // ponto que intersecta o plano
         vetor v1 = B - A,
-                v2 = C - A,
-                v3 = P - A;
+              v2 = C - A,
+              v3 = P - A;
 
         double d00 = v1.produto_escalar(v1),
-                d01 = v1.produto_escalar(v2),
-                d11 = v2.produto_escalar(v2),
-                d20 = v3.produto_escalar(v1),
-                d21 = v3.produto_escalar(v2);
+               d01 = v1.produto_escalar(v2),
+               d11 = v2.produto_escalar(v2),
+               d20 = v3.produto_escalar(v1),
+               d21 = v3.produto_escalar(v2);
 
         double denom = d00 * d11 - d01 * d01;
 
@@ -83,7 +86,6 @@ public:
     }
 
     void rotacao(double angle, char eixo, point centroide) {
-
         this->translacao(-centroide.getX(), -centroide.getY(), -centroide.getZ());
 
         double matrix[3][3] = {0};
@@ -154,12 +156,21 @@ public:
                     (A.getZ() + B.getZ() + C.getZ()) / 3);
     }
     
-    //Getters
+    // Getters
     point getPonto() override { return this->origem; }
     point getA() const { return this->A; }
     point getB() const { return this->B; }
     point getC() const { return this->C; }
     vetor getNormal() { return this->normal; }
+
+    // Getters para propriedades do material
+    vetor getKd() const { return kd; }
+    vetor getKs() const { return ks; }
+    vetor getKe() const { return ke; }
+    vetor getKa() const { return ka; }
+    double getNi() const { return ni; }
+    double getD() const { return d; }
+    double getShininess() { return this->ns; }
 
 };
 

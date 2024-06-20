@@ -21,6 +21,7 @@ public:
     
     virtual point getPonto() = 0;
     virtual vetor getNormal() = 0;
+    virtual double getShininess() = 0;
     virtual double intersect(ray &r) = 0;
     virtual void rotacao(double angle, char eixo, point centroide) = 0;
     virtual void translacao(double dx, double dy, double dz) = 0;

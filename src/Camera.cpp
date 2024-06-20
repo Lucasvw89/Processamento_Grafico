@@ -8,6 +8,7 @@
 #include "Ray.cpp"
 #include "Sphere.cpp"
 #include "Triangle.cpp"
+#include "Light.cpp"
 
 using namespace std;
 
@@ -86,7 +87,7 @@ public:
         return INFINITY;
     }
 
-    void render(vector<object*>& objetos) {
+    void render(vector<object*>& objetos, const vector<light>& lights, const vetor& ambient_light) {
         int image_width = this->width;
         int image_height = int(image_width / aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
@@ -124,20 +125,45 @@ public:
                     double t = ray_color(r, *objetos[k]);
                     
                     if (t != INFINITY) {
-                        vetor curr = objetos[k]->getNormal().normalizar();
-                        double cos = abs(W.produto_escalar(curr));
-                        vetor cor = objetos[k]->getColor() * cos;
+                        // Calcular a iluminação Phong aqui
+                        point intersection = r.f(t);
+                        vetor normal = objetos[k]->getNormal().normalizar();
+                        vetor objeto_color = objetos[k]->getColor();
+                        
+                        vetor final_color = objeto_color * ambient_light; // componente ambiente
+                        
+                        for (const auto& light : lights) {
+                            vetor light_dir = (light.getPosition() - intersection).normalizar();
+                            vetor view_dir = (camera_center - intersection).normalizar();
+                            vetor reflect_dir = reflect(light_dir*-1, normal);
+                            
+                            // Componente difusa
+                            double diff = std::max(light_dir.produto_escalar(normal), 0.0);
+                            final_color = final_color + (objeto_color * light.getColor() * diff);
+                            
+                            // Componente especular
+                            double spec = pow(std::max(view_dir.produto_escalar(reflect_dir), 0.0), objetos[k]->getShininess());
+                            final_color = final_color + (light.getColor() * spec);
+                        }
+                        
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
-                            pixel_info = make_tuple(k, t, cor);
+                            pixel_info = make_tuple(k, t, final_color);
                         }
                     }
                 }
                 get<2>(pixel_info).write_color(cout);
-                // std::clog << get<2>(pixel_info) << std::endl;
             }
         }
         std::clog << "\rDone.                 \n";
     }
+
+    // Função auxiliar para calcular o vetor refletido
+    vetor reflect(const vetor& L, const vetor& N) {
+        double dotProduct = N.produto_escalar(L);
+        vetor temp = 2.0 * dotProduct * N;
+        return temp - L;
+    }
+
 };
 
 #endif

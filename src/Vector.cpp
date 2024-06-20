@@ -94,6 +94,10 @@ class vetor{
             return this->x * v.getX() + this->y * v.getY() + this->z * v.getZ();
         }
 
+        double produto_escalar(const vetor& other) const {
+            return x * other.x + y * other.y + z * other.z;
+        }
+
         /*
             Recebe um vetor e retorna a projeção vetorial de V no vetor atual.
         */
@@ -139,6 +143,10 @@ class vetor{
         {
             return vetor(t1 * this->getX(), t1 * this->getY(), t1 * this->getZ());
         }
+        
+        inline vetor operator*(vetor v1){
+            return vetor(this->getX() * v1.getX(), this->getY() * v1.getY(), this->getZ() * v1.getZ());
+        }
 
         vetor operator*(const double matrix[3][3]) const {
             double newX = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
@@ -147,6 +155,10 @@ class vetor{
 
             return vetor(newX, newY, newZ);
         }
+
+        friend vetor operator*(double scalar, const vetor& v) {
+            return vetor{v.x * scalar, v.y * scalar, v.z * scalar};
+        }   
 
         inline vetor operator/(double t1)
         {
