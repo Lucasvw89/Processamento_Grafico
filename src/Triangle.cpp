@@ -28,7 +28,7 @@ private:
 public:
     // Construtor
     triangle(vetor& normal, point& A, point B, point C, vetor& kd, vetor& ks, vetor& ke, vetor& ka, double ns, double ni, double d)
-        : object(ka), normal(normal), A(A), B(B), C(C), kd(kd), ks(ks), ke(ke), ka(ka), ns(ns), ni(ni), d(d)
+        : object(kd), normal(normal), A(A), B(B), C(C), kd(kd), ks(ks), ke(ke), ka(ka), ns(ns), ni(ni), d(d)
     {
         this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
                             (A.getY() + B.getY() + C.getY()) / 3,
@@ -164,13 +164,13 @@ public:
     vetor getNormal() { return this->normal; }
 
     // Getters para propriedades do material
-    vetor getKd() const { return kd; }
-    vetor getKs() const { return ks; }
-    vetor getKe() const { return ke; }
-    vetor getKa() const { return ka; }
-    double getNi() const { return ni; }
-    double getD() const { return d; }
-    double getShininess() { return this->ns; }
+        vetor getKd() {return kd;};
+        vetor getKs() {return ks;};
+        vetor getKe() {return ke;}; ;
+        vetor getKa() {return ka;}; ;
+        double getNi() {return ni;}; ;
+        double getD(){return d;}; ;
+        double getShininess() { return ns;};
 
 };
 

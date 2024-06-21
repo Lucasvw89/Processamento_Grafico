@@ -12,13 +12,31 @@ class sphere : public object{
         double ta;
         ray* ra;
 
+        //iluminação
+        vetor kd;  // Difuso
+        vetor ks;  // Specular
+        vetor ke;  // Emissivo
+        vetor ka;  // Ambiente
+        double ns; // Brilho
+        double ni; // Índice de refração
+        double d;  // Opacidade
+
     public:
         point center;
         double radius;
 
-        sphere(point center, double radius, vetor color) : object(color), radius(radius), center(center) {}
+        sphere(point center, double radius, vetor color, vetor kd, vetor ks, vetor ke, vetor ka, double ns, double ni, double d) : 
+        object(color), radius(radius), center(center), kd(kd), ks(ks), ke(ke), ka(ka), ns(ns), ni(ni), d(d) {}
 
         point getPonto() override { return this->center; }
+
+        vetor getKd() {return kd;};
+        vetor getKs() {return ks;};
+        vetor getKe() {return ke;}; ;
+        vetor getKa() {return ka;}; ;
+        double getNi() {return ni;}; ;
+        double getD(){return d;}; ;
+        double getShininess() { return this->ns; };
 
         double intersect(ray &r) override {
             double t;

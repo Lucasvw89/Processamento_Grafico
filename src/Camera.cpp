@@ -87,6 +87,13 @@ public:
         return INFINITY;
     }
 
+    // Função auxiliar para calcular o vetor refletido
+    vetor reflect(const vetor& L, const vetor& N) {
+        double dotProduct = N.produto_escalar(L);
+        vetor temp = 2.0 * dotProduct * N;
+        return temp - L;
+    }
+
     void render(vector<object*>& objetos, const vector<light>& lights, const vetor& ambient_light) {
         int image_width = this->width;
         int image_height = int(image_width / aspect_ratio);
@@ -130,25 +137,32 @@ public:
                         vetor normal = objetos[k]->getNormal().normalizar();
                         vetor objeto_color = objetos[k]->getColor();
                         
-                        vetor final_color = objeto_color * ambient_light; // componente ambiente
+                        vetor final_color = objeto_color;
+                        final_color = final_color + (objetos[k]->getKa().getX() * ambient_light); // componente ambiente
                         
                         for (const auto& light : lights) {
                             vetor light_dir = (light.getPosition() - intersection).normalizar();
                             vetor view_dir = (camera_center - intersection).normalizar();
-                            vetor reflect_dir = reflect(light_dir*-1, normal);
+                            vetor reflect_dir = reflect(light_dir, normal);
                             
                             // Componente difusa
                             double diff = std::max(light_dir.produto_escalar(normal), 0.0);
-                            final_color = final_color + (objeto_color * light.getColor() * diff);
-                            
+                            final_color = final_color + ((objetos[k]->getKa().getX() * light.getColor()) * diff);                            
+
                             // Componente especular
                             double spec = pow(std::max(view_dir.produto_escalar(reflect_dir), 0.0), objetos[k]->getShininess());
-                            final_color = final_color + (light.getColor() * spec);
+                            final_color = final_color + (light.getColor() * spec) * (objetos[k]->getKs().getX());
                         }
                         
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
                             pixel_info = make_tuple(k, t, final_color);
                         }
+                        // vetor curr = objetos[k]->getNormal().normalizar();
+                        // double cos = abs(W.produto_escalar(curr));
+                        // vetor cor = objetos[k]->getColor() * cos;
+                        // if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
+                        //     pixel_info = make_tuple(k, t, cor);
+                        // }
                     }
                 }
                 get<2>(pixel_info).write_color(cout);
@@ -157,12 +171,7 @@ public:
         std::clog << "\rDone.                 \n";
     }
 
-    // Função auxiliar para calcular o vetor refletido
-    vetor reflect(const vetor& L, const vetor& N) {
-        double dotProduct = N.produto_escalar(L);
-        vetor temp = 2.0 * dotProduct * N;
-        return temp - L;
-    }
+
 
 };
 
