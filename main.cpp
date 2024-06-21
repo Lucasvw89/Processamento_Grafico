@@ -61,7 +61,7 @@ int main() {
 
     colormap cmap;
 
-    objReader reader("./input/cubo.obj", cmap);
+    objReader reader("./input/untitled.obj", cmap);
 
 
     point pos_cam(6,2,2);
@@ -74,26 +74,29 @@ int main() {
 
     // vetor normal_plano(0,1,0);
 
-    // vetor cor(0.4,0,0.4);
-    // vetor kd = vetor(0.5, 0, 0);
-    // vetor ks = vetor(0.7, 0, 0);
-    // vetor ke = vetor(0.000000, 0.000000, 0.000000);
-    // vetor ka = vetor(0.6, 1, 1);
-    // double ns = 10.000000;
-    // double ni = 1.450000;
-    // double d = 1.000000;
-    // sphere esfera = sphere(origem_esfera, 2, cor, kd,ks,ke,ka, ns, ni, d);
-    // vector<object*> triangulos;
-    // triangulos.push_back(&esfera);
+    vetor cor(0.4,0,0.4);
+    vetor kd = vetor(0.5, 0, 0);
+    vetor ks = vetor(0.7, 0, 0);
+    vetor ke = vetor(0.000000, 0.000000, 0.000000);
+    vetor ka = vetor(0.6, 1, 1);
+    double ns = 10.000000;
+    double ni = 1.450000;
+    double d = 1.000000;
+    sphere esfera = sphere(origem_esfera, 2, cor, kd,ks,ke,ka, ns, ni, d);
+    vector<object*> triangulos;
+    triangulos.push_back(&esfera);
 
     
-    vector<object*> triangulos = reader.getTriangles();
+    // vector<object*> triangulos = reader.getTriangles();
 
     vector<light> lts;
-    point lt_pos(2.2,0,0);
+    point lt_pos(6,4,2);
+    point lt_pos2(6,4,-4);
     vetor lt_color(0.4,0.4,0.4);
     light lt(lt_pos,lt_color);
+    light lt2(lt_pos2, lt_color);
     lts.push_back(lt);
+    lts.push_back(lt2);
 
     vetor ambiente_color(0.1,0.1,0.1);
     cam.render(triangulos, lts, ambiente_color);
