@@ -25,18 +25,37 @@ class sphere : public object{
         point center;
         double radius;
 
-        sphere(point center, double radius, vetor color, vetor kd, vetor ks, vetor ke, vetor ka, double ns, double ni, double d) : 
-        object(color), radius(radius), center(center), kd(kd), ks(ks), ke(ke), ka(ka), ns(ns), ni(ni), d(d) {}
+        sphere(point center,
+               double radius,
+               vetor color,
+               vetor kd,
+               vetor ks,
+               vetor ke,
+               vetor ka,
+               double ns,
+               double ni,
+               double d) : 
+
+        object(color),
+        radius(radius),
+        center(center),
+        kd(kd),
+        ks(ks),
+        ke(ke),
+        ka(ka),
+        ns(ns),
+        ni(ni),
+        d(d) {}
 
         point getPonto() override { return this->center; }
 
-        vetor getKd() {return kd;};
-        vetor getKs() {return ks;};
-        vetor getKe() {return ke;}; ;
-        vetor getKa() {return ka;}; ;
-        double getNi() {return ni;}; ;
-        double getD(){return d;}; ;
-        double getShininess() { return this->ns; };
+        vetor getKd() override {return kd;}
+        vetor getKs() override {return ks;}
+        vetor getKe() override {return ke;}
+        vetor getKa() override {return ka;}
+        double getNi() override {return ni;}
+        double getD() override {return d;}
+        double getShininess() override { return this->ns; }
 
         double intersect(ray &r) override {
             double t;

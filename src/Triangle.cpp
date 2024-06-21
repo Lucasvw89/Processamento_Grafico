@@ -27,8 +27,30 @@ private:
 
 public:
     // Construtor
-    triangle(vetor& normal, point& A, point B, point C, vetor& kd, vetor& ks, vetor& ke, vetor& ka, double ns, double ni, double d)
-        : object(kd), normal(normal), A(A), B(B), C(C), kd(kd), ks(ks), ke(ke), ka(ka), ns(ns), ni(ni), d(d)
+    triangle(vetor& normal,
+             point& A,
+             point& B,
+             point& C,
+             vetor& kd,
+             vetor& ks,
+             vetor& ke,
+             vetor& ka,
+             double ns,
+             double ni,
+             double d)
+
+           : object(kd),
+             normal(normal),
+             A(A),
+             B(B),
+             C(C),
+             kd(kd),
+             ks(ks),
+             ke(ke),
+             ka(ka),
+             ns(ns),
+             ni(ni),
+             d(d)
     {
         this->origem = point((A.getX() + B.getX() + C.getX()) / 3,
                             (A.getY() + B.getY() + C.getY()) / 3,
@@ -85,7 +107,7 @@ public:
             return INFINITY;
     }
 
-    void rotacao(double angle, char eixo, point centroide) {
+    void rotacao(double angle, char eixo, point centroide) override {
         this->translacao(-centroide.getX(), -centroide.getY(), -centroide.getZ());
 
         double matrix[3][3] = {0};
@@ -124,14 +146,14 @@ public:
         this->translacao(centroide.getX(), centroide.getY(), centroide.getZ());
     }
 
-    void translacao(double dx, double dy, double dz) {
+    void translacao(double dx, double dy, double dz) override {
         this->A = this->A + point(dx, dy, dz);
         this->B = this->B + point(dx, dy, dz);
         this->C = this->C + point(dx, dy, dz);
         this->origem = calcularOrigem();
     }
 
-    void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY) {
+    void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY) override {
         double matrix[3][3];
 
         // Matriz de cisalhamento
@@ -161,16 +183,16 @@ public:
     point getA() const { return this->A; }
     point getB() const { return this->B; }
     point getC() const { return this->C; }
-    vetor getNormal() { return this->normal; }
+    vetor getNormal() override { return this->normal; }
 
     // Getters para propriedades do material
-        vetor getKd() {return kd;};
-        vetor getKs() {return ks;};
-        vetor getKe() {return ke;}; ;
-        vetor getKa() {return ka;}; ;
-        double getNi() {return ni;}; ;
-        double getD(){return d;}; ;
-        double getShininess() { return ns;};
+        vetor getKd() override {return kd;}
+        vetor getKs() override {return ks;}
+        vetor getKe() override {return ke;}
+        vetor getKa() override {return ka;}
+        double getNi() override {return ni;}
+        double getD() override {return d;}
+        double getShininess() override { return ns; }
 
 };
 

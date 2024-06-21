@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <complex>
 #include <iostream>
 #include <fstream>
@@ -61,20 +62,20 @@ int main() {
 
     colormap cmap;
 
-    objReader reader("./input/untitled.obj", cmap);
+    objReader reader("./input/cubo.obj", cmap);
 
 
-    point pos_cam(6,2,2);
+    point pos_cam(6,2,0);
     point target_cam(0,0,0);
     vetor up_cam(0,1,0);
 
-    camera cam(400, pos_cam, target_cam, up_cam, 16.0/9.0, 1);
+    camera cam(600, pos_cam, target_cam, up_cam, 16.0/9.0, 1);
 
     point origem_esfera(0,0,0);
 
     // vetor normal_plano(0,1,0);
 
-    vetor cor(0.4,0,0.4);
+    vetor cor(0,0,0.6);
     vetor kd = vetor(0.5, 0, 0);
     vetor ks = vetor(0.7, 0, 0);
     vetor ke = vetor(0.000000, 0.000000, 0.000000);
@@ -83,15 +84,19 @@ int main() {
     double ni = 1.450000;
     double d = 1.000000;
     sphere esfera = sphere(origem_esfera, 2, cor, kd,ks,ke,ka, ns, ni, d);
-    vector<object*> triangulos;
+    vector<object*> triangulos = reader.getTriangles();
+    rotacao(triangulos, 45.0, 'X');
+    /*rotacao(triangulos, 45.0, 'Y');*/
+    rotacao(triangulos, 45.0, 'Z');
+    translacao(triangulos, 0, 3, 0);
+
+    plane plano = plane(origem_esfera, vetor(0, 1, 0), cor, kd,ks,ke,ka, ns, ni, d);
+    triangulos.push_back(&plano);
     triangulos.push_back(&esfera);
 
-    
-    // vector<object*> triangulos = reader.getTriangles();
-
     vector<light> lts;
-    point lt_pos(6,4,2);
-    point lt_pos2(6,4,-4);
+    point lt_pos(0, 100, 100);
+    point lt_pos2(0, 100, -100);
     vetor lt_color(0.4,0.4,0.4);
     light lt(lt_pos,lt_color);
     light lt2(lt_pos2, lt_color);
