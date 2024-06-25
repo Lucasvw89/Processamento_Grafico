@@ -95,7 +95,7 @@ public:
     }
 
     vetor reflection(ray& r, vector<object*>& objetos, int index){
-        if(index < 1)
+        if(index < 3)
         {
             vetor cor;
             index++;
@@ -104,10 +104,10 @@ public:
                 if(tt!=INFINITY) {
                     vetor cor = objetos[k]->getColor();
                     point intersection = r.f(tt);
-                    ray reflected = ray(intersection, reflect(r.getDirection().normalizar(), objetos[k]->getNormal()));
-                    intersection = intersection + reflected.getDirection() * 0.001;
-
-
+                    // clog << "intersection: " << intersection.getX() << " " << intersection.getY() << " " << intersection.getZ() << endl;
+                    vetor dir_reflecray = reflect(r.getDirection().normalizar(), objetos[k]->getNormal());
+                    intersection = intersection + dir_reflecray * 0.001;
+                    ray reflected = ray(intersection, dir_reflecray);
 
                 
                     cor = cor + ((reflection(reflected, objetos, index)*objetos[k]->getD()));
@@ -118,6 +118,51 @@ public:
         }
         return vetor(0,0,0);
     }
+
+
+
+
+    vetor refract(const vetor& incidentt, const vetor& normall, double n1, double n2, int index) {
+            index++;
+            vetor normal = normall;
+            vetor incident = incidentt;
+            double cosi = max(-1.0, min(1.0, incident.produto_escalar(normal)));
+            cosi = cosi *-1.0;
+            if (cosi < 0) {
+                return refract(incident, normal*-1, n2, n1, index);
+            }
+            double eta = n1 / n2;
+            double k = 1 - eta * eta * (1 - cosi * cosi);
+            if (k < 0) {
+                return {0, 0, 0}; // Total Internal Reflection
+            } else {
+                return incident * eta + normal * (eta * cosi - sqrt(k));
+            }
+    }
+
+
+    vetor refraction(ray& r, vector<object*>& objetos, int index) {
+        if(index < 3)
+        {
+            index++;
+            for (int k = 0; k < objetos.size(); k++) {
+                double tt = ray_color(r, *objetos[k]);
+                if(tt!=INFINITY) {
+                    point intersection = r.f(tt);
+                    vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[k]->getNormal(), 1.0, objetos[k]->getNi(), 0);
+                    // clog << dir_refracray.getX() << " " << dir_refracray.getY() << " " << dir_refracray.getZ() << endl;
+                    intersection = intersection + dir_refracray * 0.001;
+                    ray refracted = ray(intersection, dir_refracray);
+                    vetor final_colorr = objetos[k]->getColor() + refraction(refracted, objetos, index); 
+                    clog << final_colorr.getX() << " " << final_colorr.getY() << " " << final_colorr.getZ() << endl;
+                    return final_colorr;
+                }
+            }
+        } else return vetor(0,0,0);
+    }
+
+
+
 
     void render(vector<object*>& objetos, const vector<light>& lights, const vetor& ambient_light) {
         int image_width = this->width;
@@ -182,14 +227,25 @@ public:
                         }
 
                         // Componente reflexão
+                        if(objetos[k]->getD() != 0) {   
                         vetor dir_reflec_ray = reflect(view_dir, normal);
-                        dir_reflec_ray = dir_reflec_ray;
                         intersection = intersection + dir_reflec_ray * 0.001;
                         ray reflec_ray(intersection, dir_reflec_ray);
                         final_color = final_color + (reflection(reflec_ray, objetos, 0)*objetos[k]->getD());
+                        }
 
+                        
                         // Componente refração
-
+                        if (objetos[k]->getNi() != 1) {
+                            float n1 = 1; // Índice de refração do ar
+                            float n2 = objetos[k]->getNi(); // Índice de refração do objeto
+                            vetor dir_refrac_ray = refract(view_dir, normal, n1, n2,0);
+                            if (dir_refrac_ray.getX() != 0 || dir_refrac_ray.getY() != 0 || dir_refrac_ray.getZ() != 0) { // Verifica se não houve reflexão total
+                                intersection = intersection + dir_refrac_ray * 0.001;
+                                ray refrac_ray(intersection, dir_refrac_ray);
+                                final_color = final_color + (refraction(refrac_ray, objetos, 0) * (objetos[k]->getNi()));
+                            }
+                        }
 
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
                             pixel_info = make_tuple(k, t, final_color);
