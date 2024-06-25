@@ -89,9 +89,34 @@ public:
 
     // Função auxiliar para calcular o vetor refletido
     vetor reflect(const vetor& L, const vetor& N) {
-        double dotProduct = N.produto_escalar(L);
+        double dotProduct = L.produto_escalar(N);
         vetor temp = 2.0 * dotProduct * N;
-        return temp - L;
+        return (temp - L);
+    }
+
+    vetor reflection(ray& r, vector<object*>& objetos, int index){
+        if(index < 1)
+        {
+            vetor cor;
+            index++;
+            for (int k = 0; k < objetos.size(); k++) {
+                double tt = ray_color(r, *objetos[k]);
+                if(tt!=INFINITY) {
+                    vetor cor = objetos[k]->getColor();
+                    point intersection = r.f(tt);
+                    ray reflected = ray(intersection, reflect(r.getDirection().normalizar(), objetos[k]->getNormal()));
+                    intersection = intersection + reflected.getDirection() * 0.001;
+
+
+
+                
+                    cor = cor + ((reflection(reflected, objetos, index)*objetos[k]->getD()));
+
+                    return cor;
+                }
+            }
+        }
+        return vetor(0,0,0);
     }
 
     void render(vector<object*>& objetos, const vector<light>& lights, const vetor& ambient_light) {
@@ -140,9 +165,10 @@ public:
                         vetor final_color = objeto_color;
                         final_color = final_color + (objetos[k]->getKa().getX() * ambient_light); // componente ambiente
                         
+                        vetor view_dir = (camera_center - intersection).normalizar();
                         for (const auto& light : lights) {
                             vetor light_dir = (light.getPosition() - intersection).normalizar();
-                            vetor view_dir = (camera_center - intersection).normalizar();
+                            
                             vetor reflect_dir = reflect(light_dir, normal);
                             
                             // Componente difusa
@@ -152,8 +178,19 @@ public:
                             // Componente especular
                             double spec = pow(std::max(view_dir.produto_escalar(reflect_dir), 0.0), objetos[k]->getShininess());
                             final_color = final_color + (light.getColor() * spec) * (objetos[k]->getKs().getX());
+
                         }
-                        
+
+                        // Componente reflexão
+                        vetor dir_reflec_ray = reflect(view_dir, normal);
+                        dir_reflec_ray = dir_reflec_ray;
+                        intersection = intersection + dir_reflec_ray * 0.001;
+                        ray reflec_ray(intersection, dir_reflec_ray);
+                        final_color = final_color + (reflection(reflec_ray, objetos, 0)*objetos[k]->getD());
+
+                        // Componente refração
+
+
                         if (t < get<1>(pixel_info) || get<1>(pixel_info) == 0) {
                             pixel_info = make_tuple(k, t, final_color);
                         }

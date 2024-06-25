@@ -23,7 +23,7 @@ private:
     vetor ka;  // Ambiente
     double ns; // Brilho
     double ni; // Índice de refração
-    double d;  // Opacidade
+    double d;  // Reflexao
 
 public:
     // Construtor
