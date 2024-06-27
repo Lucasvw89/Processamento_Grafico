@@ -66,18 +66,19 @@ int main() {
 
 
     point pos_cam(6,2,0);
-    point target_cam(0,0,0);
+    point target_cam(0,-2,0);
     vetor up_cam(0,1,0);
 
     camera cam(400, pos_cam, target_cam, up_cam, 16.0/9.0, 1);
 
-    point origem_esfera1(1,0,2);
-    point origem_esfera2(0,3,-3);    
+    // point origem_esfera1(1,0,2);
+    point origem_esfera1(-2,3,-5);    
+    point origem_esfera2(0,0,0);    
     point origem_esfera3(1.5,-0.5,-2);
 
     // vetor normal_plano(0,1,0);
 
-    vetor cor(1,0,0);
+    vetor cor(0.4,0,0);
     vetor cor2(0.4,0.4,0.4);
     vetor cor3(0,0,0.5);
     vetor kd = vetor(0.5, 0, 0);
@@ -85,17 +86,17 @@ int main() {
     vetor ke = vetor(0.000000, 0.000000, 0.000000);
     vetor ka = vetor(0.6, 1, 1);
     double ns = 10.000000;
-    double ni = 0.8;
+    double ni = 0.9;
     double d = 2.000000;
     vector <object*> triangulos;
     // vector<object*> triangulos = reader.getTriangles();
 
-    // sphere esfera1 = sphere(origem_esfera1, 2, cor, kd,ks,ke,ka, ns, ni, 0.0);
-    // triangulos.push_back(&esfera1);
-    sphere esfera2 = sphere(origem_esfera2, 2, vetor(0,0,0), kd,ks,ke,ka, ns, ni, 0.0);
+    sphere esfera1 = sphere(origem_esfera2, 1, cor, kd,ks,ke,ka, ns, 1.0, 0.0);
+    triangulos.push_back(&esfera1);
+    sphere esfera2 = sphere(origem_esfera2, 2, vetor(0,0,0), kd,ks,ke,ka, ns, 0.9, 0.0);
     triangulos.push_back(&esfera2);
-    sphere esfera4 = sphere(origem_esfera2, 0.5, cor3, kd,ks,ke,ka, ns, 0.0, 0.0);
-    triangulos.push_back(&esfera4);
+    // sphere esfera4 = sphere(origem_esfera2, 0.5, cor3, kd,ks,ke,ka, ns, 0.0, 0.0);
+    // triangulos.push_back(&esfera4);
 
     // sphere esfera3 = sphere(origem_esfera3, 1, cor3, kd,ks,ke,ka, ns, ni, 0.0);
     // triangulos.push_back(&esfera3);
@@ -105,9 +106,9 @@ int main() {
     // translacao(triangulos, 0, 3, 0);
 
     point origem_plano(0,0,0);
-    vetor cor_plano(0.5,0.5,0);
-    // plane plano = plane(origem_plano, vetor(0, 1, 0), cor_plano, kd,ks,ke,ka, ns, ni, 1);
-    // triangulos.push_back(&plano);
+    vetor cor_plano(0.3,0.3,0);
+    plane plano = plane(origem_plano, vetor(0, 1, 0), cor_plano, kd,ks,ke,ka, ns, 1.0, 0.0);
+    triangulos.push_back(&plano);
 
     vector<light> lts;
     point lt_pos(0, 100, 100);

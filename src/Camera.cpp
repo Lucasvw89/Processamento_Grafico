@@ -122,26 +122,41 @@ public:
 
 
 
-    vetor refract(const vetor& incidentt, const vetor& normall, double n1, double n2, int index) {
-            index++;
-            vetor normal = normall;
-            vetor incident = incidentt;
-            double cosi = max(-1.0, min(1.0, incident.produto_escalar(normal)));
-            cosi = cosi *-1.0;
-            if (cosi < 0) {
-                return refract(incident, normal*-1, n2, n1, index);
-            }
-            double eta = n1 / n2;
-            double k = 1 - eta * eta * (1 - cosi * cosi);
-            if (k < 0) {
-                return {0, 0, 0}; // Total Internal Reflection
-            } else {
-                return incident * eta + normal * (eta * cosi - sqrt(k));
-            }
+    // vetor refract(const vetor& incidentt, const vetor& normall, double n1, double n2) {
+    //         vetor normal = normall;
+    //         vetor incident = incidentt;
+    //         double cosi = max(-1.0, min(1.0, incident.produto_escalar(normal)));
+    //         cosi = cosi *-1.0;
+    //         if (cosi < 0) {
+    //             return refract(incident, normal*-1, n2, n1);
+    //         }
+    //         double eta = n1 / n2;
+    //         double k = 1 - eta * eta * (1 - cosi * cosi);
+    //         if (k < 0) {
+    //             return {0, 0, 0}; // Total Internal Reflection
+    //         } else {
+    //             vetor refratado = incident * eta + normal * (eta * cosi - sqrt(k)); 
+    //             return refratado;
+    //         }
+    // }
+
+    vetor refract(const vetor& incident, const vetor& normal, double n1, double n2) {
+        vetor norm = normal;
+        double coso = incident.produto_escalar(normal);
+        double seno = sqrt(1 - (coso * coso));
+        double senot = (n2 / n1) * seno;
+        double aa = senot * senot;
+        double cosot = sqrt(1 - aa);
+        vetor incid = incident;
+        vetor t = (incid * (n1 / n2));
+        double cons = (cosot - ((n1 / n2) * coso));
+        vetor normall = norm * cons;
+        t = t - normall; 
+        return t;
     }
 
-
     vetor refraction(ray& r, vector<object*>& objetos, int index) {
+        vetor final_colorr(0, 0, 0);
         if(index < 3)
         {
             index++;
@@ -149,16 +164,16 @@ public:
                 double tt = ray_color(r, *objetos[k]);
                 if(tt!=INFINITY) {
                     point intersection = r.f(tt);
-                    vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[k]->getNormal(), 1.0, objetos[k]->getNi(), 0);
-                    // clog << dir_refracray.getX() << " " << dir_refracray.getY() << " " << dir_refracray.getZ() << endl;
-                    intersection = intersection + dir_refracray * 0.001;
+                    vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[k]->getNormal(), 1.0, objetos[k]->getNi());
+                    dir_refracray = dir_refracray *-1;
+                    intersection = intersection + dir_refracray * 0.1;
                     ray refracted = ray(intersection, dir_refracray);
-                    vetor final_colorr = objetos[k]->getColor() + refraction(refracted, objetos, index); 
-                    clog << final_colorr.getX() << " " << final_colorr.getY() << " " << final_colorr.getZ() << endl;
-                    return final_colorr;
-                }
+                    vetor refrac_color = (refraction(refracted, objetos, index)*objetos[k]->getNi()); 
+                    final_colorr = final_colorr + refrac_color;
+                }   
             }
-        } else return vetor(0,0,0);
+        } 
+        return final_colorr;
     }
 
 
@@ -237,13 +252,21 @@ public:
                         
                         // Componente refração
                         if (objetos[k]->getNi() != 1) {
-                            float n1 = 1; // Índice de refração do ar
-                            float n2 = objetos[k]->getNi(); // Índice de refração do objeto
-                            vetor dir_refrac_ray = refract(view_dir, normal, n1, n2,0);
+                            double n1 = 1; // Índice de refração do ar
+                            double n2 = objetos[k]->getNi(); // Índice de refração do objeto
+                            vetor dir_refrac_ray = refract(view_dir, normal, n1, n2);
+                            dir_refrac_ray = dir_refrac_ray * -1;
                             if (dir_refrac_ray.getX() != 0 || dir_refrac_ray.getY() != 0 || dir_refrac_ray.getZ() != 0) { // Verifica se não houve reflexão total
-                                intersection = intersection + dir_refrac_ray * 0.001;
+                                intersection = intersection + dir_refrac_ray * 0.1;
                                 ray refrac_ray(intersection, dir_refrac_ray);
-                                final_color = final_color + (refraction(refrac_ray, objetos, 0) * (objetos[k]->getNi()));
+                                // vetor refrac_color = refraction(refrac_ray, objetos, 0);
+                                for(int v=0; v<objetos.size(); v++) {
+                                    if(ray_color(refrac_ray, *objetos[v]) != INFINITY) {
+                                        final_color = final_color + (objetos[v]->getColor() * (objetos[k]->getNi()));
+                                    }
+                                }
+                                // refrac_color = refrac_color * (objetos[k]->getNi());
+                                // final_color = final_color + (refrac_color);
                             }
                         }
 
