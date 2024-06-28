@@ -72,8 +72,8 @@ int main() {
     camera cam(400, pos_cam, target_cam, up_cam, 16.0/9.0, 1);
 
     // point origem_esfera1(1,0,2);
-    point origem_esfera1(-2,3,-5);    
-    point origem_esfera2(0,0,0);    
+    point origem_esfera1(0,2,0);    
+    point origem_esfera2(0,2,0);    
     point origem_esfera3(1.5,-0.5,-2);
 
     // vetor normal_plano(0,1,0);
@@ -91,10 +91,12 @@ int main() {
     vector <object*> triangulos;
     // vector<object*> triangulos = reader.getTriangles();
 
-    sphere esfera1 = sphere(origem_esfera2, 1, cor, kd,ks,ke,ka, ns, 1.0, 0.0);
-    triangulos.push_back(&esfera1);
-    sphere esfera2 = sphere(origem_esfera2, 2, vetor(0,0,0), kd,ks,ke,ka, ns, 0.9, 0.0);
+    sphere esfera2 = sphere(origem_esfera2, 3, vetor(0,0,0), kd,ks,ke,ka, ns, 0.95, 0.0);
     triangulos.push_back(&esfera2);
+    sphere esfera1 = sphere(origem_esfera1, 2, cor, kd,ks,ke,ka, ns, 1.0, 0.0);
+    triangulos.push_back(&esfera1);
+    sphere esfera3 = sphere(origem_esfera1,1, vetor(0,0,0.5), kd,ks,ke,ka, ns, 1.0, 0.0);
+    // triangulos.push_back(&esfera3);
     // sphere esfera4 = sphere(origem_esfera2, 0.5, cor3, kd,ks,ke,ka, ns, 0.0, 0.0);
     // triangulos.push_back(&esfera4);
 
@@ -116,7 +118,7 @@ int main() {
     vetor lt_color(0.4,0.4,0.4);
     light lt(lt_pos,lt_color);
     light lt2(lt_pos2, lt_color);
-    lts.push_back(lt);
+    // lts.push_back(lt);
     // lts.push_back(lt2);
 
     vetor ambiente_color(0.1,0.1,0.1);

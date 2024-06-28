@@ -160,23 +160,33 @@ public:
         if(index < 3)
         {
             index++;
+            double tt= INFINITY;
+            double ind = 0;
             for (int k = 0; k < objetos.size(); k++) {
-                double tt = ray_color(r, *objetos[k]);
+                double result = ray_color(r, *objetos[k]);
+                if(result!=INFINITY and result < tt) {
+                    tt = result;
+                    ind = k;
+                }
+            }
                 if(tt!=INFINITY) {
+                    if(objetos[ind]->getNi() != 1.0)
+                    {
                     point intersection = r.f(tt);
-                    vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[k]->getNormal(), 1.0, objetos[k]->getNi());
+                    vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[ind]->getNormal(), 1.0, objetos[ind]->getNi());
                     dir_refracray = dir_refracray *-1;
                     intersection = intersection + dir_refracray * 0.1;
                     ray refracted = ray(intersection, dir_refracray);
-                    vetor refrac_color = (refraction(refracted, objetos, index)*objetos[k]->getNi()); 
+                    vetor refrac_color = objetos[ind]->getColor() + (refraction(refracted, objetos, index)*objetos[ind]->getNi()); 
                     final_colorr = final_colorr + refrac_color;
+                    } else
+                    {
+                        final_colorr = objetos[ind]->getColor();
+                    }
                 }   
             }
-        } 
         return final_colorr;
-    }
-
-
+        } 
 
 
     void render(vector<object*>& objetos, const vector<light>& lights, const vetor& ambient_light) {
@@ -244,8 +254,8 @@ public:
                         // Componente reflexão
                         if(objetos[k]->getD() != 0) {   
                         vetor dir_reflec_ray = reflect(view_dir, normal);
-                        intersection = intersection + dir_reflec_ray * 0.001;
-                        ray reflec_ray(intersection, dir_reflec_ray);
+                        point new_intersection = intersection + dir_reflec_ray * 0.001;
+                        ray reflec_ray(new_intersection, dir_reflec_ray);
                         final_color = final_color + (reflection(reflec_ray, objetos, 0)*objetos[k]->getD());
                         }
 
@@ -256,17 +266,17 @@ public:
                             double n2 = objetos[k]->getNi(); // Índice de refração do objeto
                             vetor dir_refrac_ray = refract(view_dir, normal, n1, n2);
                             dir_refrac_ray = dir_refrac_ray * -1;
-                            if (dir_refrac_ray.getX() != 0 || dir_refrac_ray.getY() != 0 || dir_refrac_ray.getZ() != 0) { // Verifica se não houve reflexão total
-                                intersection = intersection + dir_refrac_ray * 0.1;
-                                ray refrac_ray(intersection, dir_refrac_ray);
-                                // vetor refrac_color = refraction(refrac_ray, objetos, 0);
-                                for(int v=0; v<objetos.size(); v++) {
-                                    if(ray_color(refrac_ray, *objetos[v]) != INFINITY) {
-                                        final_color = final_color + (objetos[v]->getColor() * (objetos[k]->getNi()));
-                                    }
-                                }
-                                // refrac_color = refrac_color * (objetos[k]->getNi());
-                                // final_color = final_color + (refrac_color);
+                            if (dir_refrac_ray.norma() != 0) { // Verifica se não houve reflexão total
+                                point neww_intersection = intersection + dir_refrac_ray * 0.1;
+                                ray refrac_ray(neww_intersection, dir_refrac_ray);
+                                vetor refrac_color = refraction(refrac_ray, objetos, 0);
+                                refrac_color = refrac_color * (objetos[k]->getNi());
+                                final_color = final_color + (refrac_color);
+                                // for(int v=0; v<objetos.size(); v++) {
+                                //     if(ray_color(refrac_ray, *objetos[v]) != INFINITY) {
+                                //         final_color = final_color + (objetos[v]->getColor() * (objetos[k]->getNi()));
+                                //     }
+                                // }
                             }
                         }
 
