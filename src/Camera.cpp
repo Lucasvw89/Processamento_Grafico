@@ -170,7 +170,7 @@ public:
                 }
             }
                 if(tt!=INFINITY) {
-                    if(objetos[ind]->getNi() != 1.0)
+                    if(objetos[ind]->getNi() != 0.0)
                     {
                     point intersection = r.f(tt);
                     vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[ind]->getNormal(), 1.0, objetos[ind]->getNi());
@@ -261,7 +261,7 @@ public:
 
                         
                         // Componente refração
-                        if (objetos[k]->getNi() != 1) {
+                        if (objetos[k]->getNi() != 0) {
                             double n1 = 1; // Índice de refração do ar
                             double n2 = objetos[k]->getNi(); // Índice de refração do objeto
                             vetor dir_refrac_ray = refract(view_dir, normal, n1, n2);
