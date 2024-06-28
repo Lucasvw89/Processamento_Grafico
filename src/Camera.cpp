@@ -174,7 +174,7 @@ public:
                     {
                     point intersection = r.f(tt);
                     vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[ind]->getNormal(), 1.0, objetos[ind]->getNi());
-                    dir_refracray = dir_refracray *-1;
+                    // dir_refracray = dir_refracray *-1;
                     intersection = intersection + dir_refracray * 0.1;
                     ray refracted = ray(intersection, dir_refracray);
                     vetor refrac_color = objetos[ind]->getColor() + (refraction(refracted, objetos, index)*objetos[ind]->getNi()); 

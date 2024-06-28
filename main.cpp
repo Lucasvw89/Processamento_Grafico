@@ -66,14 +66,14 @@ int main() {
 
 
     point pos_cam(6,2,0);
-    point target_cam(0,-2,0);
+    point target_cam(0,0,0);
     vetor up_cam(0,1,0);
 
-    camera cam(400, pos_cam, target_cam, up_cam, 16.0/9.0, 1);
+    camera cam(400, pos_cam, target_cam, up_cam, 16.0/9.0, 2);
 
     // point origem_esfera1(1,0,2);
     point origem_esfera1(0,2,0);    
-    point origem_esfera2(0,2,0);    
+    point origem_esfera2(0,0,0);    
     point origem_esfera3(1.5,-0.5,-2);
 
     // vetor normal_plano(0,1,0);
@@ -88,13 +88,13 @@ int main() {
     double ns = 10.000000;
     double ni = 0.9;
     double d = 2.000000;
-    vector <object*> triangulos;
-    // vector<object*> triangulos = reader.getTriangles();
+    // vector <object*> triangulos;
+    vector<object*> triangulos = reader.getTriangles();
 
-    sphere esfera2 = sphere(origem_esfera2, 3, vetor(0,0,0), kd,ks,ke,ka, ns, 0.95, 0.0);
+    sphere esfera2 = sphere(origem_esfera2, 0.5, vetor(0,0,0.5), kd,ks,ke,ka, ns, 1.0, 0.0);
     triangulos.push_back(&esfera2);
-    sphere esfera1 = sphere(origem_esfera1, 2, cor, kd,ks,ke,ka, ns, 1.0, 0.0);
-    triangulos.push_back(&esfera1);
+    sphere esfera1 = sphere(origem_esfera1, 1.5, cor, kd,ks,ke,ka, ns, 1.0, 0.0);
+    // triangulos.push_back(&esfera1);
     sphere esfera3 = sphere(origem_esfera1,1, vetor(0,0,0.5), kd,ks,ke,ka, ns, 1.0, 0.0);
     // triangulos.push_back(&esfera3);
     // sphere esfera4 = sphere(origem_esfera2, 0.5, cor3, kd,ks,ke,ka, ns, 0.0, 0.0);
@@ -110,7 +110,7 @@ int main() {
     point origem_plano(0,0,0);
     vetor cor_plano(0.3,0.3,0);
     plane plano = plane(origem_plano, vetor(0, 1, 0), cor_plano, kd,ks,ke,ka, ns, 1.0, 0.0);
-    triangulos.push_back(&plano);
+    // triangulos.push_back(&plano);
 
     vector<light> lts;
     point lt_pos(0, 100, 100);
