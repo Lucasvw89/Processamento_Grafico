@@ -94,32 +94,6 @@ public:
         return (temp - L);
     }
 
-    vetor reflection(ray& r, vector<object*>& objetos, int index){
-        if(index < 3)
-        {
-            vetor cor;
-            index++;
-            for (int k = 0; k < objetos.size(); k++) {
-                double tt = ray_color(r, *objetos[k]);
-                if(tt!=INFINITY) {
-                    vetor cor = objetos[k]->getColor();
-                    point intersection = r.f(tt);
-                    // clog << "intersection: " << intersection.getX() << " " << intersection.getY() << " " << intersection.getZ() << endl;
-                    vetor dir_reflecray = reflect(r.getDirection().normalizar(), objetos[k]->getNormal());
-                    intersection = intersection + dir_reflecray * 0.001;
-                    ray reflected = ray(intersection, dir_reflecray);
-
-                
-                    cor = cor + ((reflection(reflected, objetos, index)*objetos[k]->getD()));
-
-                    return cor;
-                }
-            }
-        }
-        return vetor(0,0,0);
-    }
-
-
     // Função auxiliar para calcular o vetor refratado
 
     vetor refract(const vetor& incident, const vetor& normal, double n1, double n2) {
@@ -136,40 +110,6 @@ public:
         t = t - normall; 
         return t;
     }
-
-    vetor refraction(ray& r, vector<object*>& objetos, int index) {
-        vetor final_colorr(0, 0, 0);
-        if(index < 3)
-        {
-            index++;
-            double tt= INFINITY;
-            double ind = 0;
-            for (int k = 0; k < objetos.size(); k++) {
-                double result = ray_color(r, *objetos[k]);
-                if(result!=INFINITY and result < tt) {
-                    tt = result;
-                    ind = k;
-                }
-            }
-                if(tt!=INFINITY) {
-                    if(objetos[ind]->getNi() != 0.0)
-                    {
-                    point intersection = r.f(tt);
-                    vetor dir_refracray = refract(r.getDirection().normalizar(), objetos[ind]->getNormal(), 1.0, objetos[ind]->getNi());
-                    // dir_refracray = dir_refracray *-1;
-                    intersection = intersection + dir_refracray * 0.1;
-                    ray refracted = ray(intersection, dir_refracray);
-                    vetor refrac_color = objetos[ind]->getColor() + (refraction(refracted, objetos, index)*objetos[ind]->getNi()); 
-                    final_colorr = final_colorr + refrac_color;
-                    } else
-                    {
-                        final_colorr = objetos[ind]->getColor();
-                    }
-                }   
-            }
-        return final_colorr;
-        } 
-
 
     vetor phong_shading(ray& r, vector<object*>& objetos, const vector<light>& lights, vetor ambient_light, int index)
     {
