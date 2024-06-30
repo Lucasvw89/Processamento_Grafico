@@ -145,7 +145,7 @@ public:
                     
                     // Componente difusa
                     double diff = std::max(light_dir.produto_escalar(normal), 0.0);
-                    final_color = final_color + ((objetos[ind]->getKa().getX() * objeto_color) * diff);                            
+                    final_color = final_color + ((objetos[ind]->getKd().getX() * objeto_color) * diff);                            
 
                     // Componente especular
                     double spec = pow(std::max(view_espc.produto_escalar(reflect_dir), 0.0), objetos[ind]->getShininess());
