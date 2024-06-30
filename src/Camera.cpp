@@ -134,7 +134,7 @@ public:
                 vetor normal = objetos[ind]->getNormal().normalizar();
                 vetor objeto_color = objetos[ind]->getColor();
                 
-                final_color = objeto_color + (objetos[ind]->getKa().getX() * ambient_light); // componente ambiente
+                final_color =  final_color + (objetos[ind]->getKa().getX() * ambient_light); // componente ambiente
                 
                 vetor view_dir = r.getDirection().normalizar();
                 vetor view_espc = (r.getOrigin() - intersection).normalizar();
@@ -145,7 +145,7 @@ public:
                     
                     // Componente difusa
                     double diff = std::max(light_dir.produto_escalar(normal), 0.0);
-                    final_color = final_color + ((objetos[ind]->getKa().getX() * light.getColor()) * diff);                            
+                    final_color = final_color + ((objetos[ind]->getKa().getX() * objeto_color) * diff);                            
 
                     // Componente especular
                     double spec = pow(std::max(view_espc.produto_escalar(reflect_dir), 0.0), objetos[ind]->getShininess());

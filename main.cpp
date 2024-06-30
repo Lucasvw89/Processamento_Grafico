@@ -78,7 +78,7 @@ int main() {
 
     // vetor normal_plano(0,1,0);
 
-    vetor cor(0.4,0,0);
+    vetor cor(1,0,0);
     vetor cor2(0.4,0.4,0.4);
     vetor cor3(0,0,0.5);
     vetor kd = vetor(0.5, 0, 0);
@@ -89,7 +89,7 @@ int main() {
     vector <object*> triangulos;
     // vector<object*> triangulos = reader.getTriangles();
 
-    sphere esfera2 = sphere(origem_esfera2, 1.9, vetor(0,0,0), kd,ks,ke,ka, ns, 0.8, 0.0);
+    sphere esfera2 = sphere(origem_esfera2, 1.9, vetor(0,0,0), kd,ks,ke,ka, ns, 1.0, 0.0);
     triangulos.push_back(&esfera2);
     sphere esfera1 = sphere(origem_esfera2, 1.0, cor, kd,ks,ke,ka, ns, 0.0, 0.0);
     triangulos.push_back(&esfera1);
@@ -111,7 +111,7 @@ int main() {
     triangulos.push_back(&plano);
 
     vector<light> lts;
-    point lt_pos(0, 5, 3);
+    point lt_pos(7, 10, 2);
     point lt_pos2(0, 100, -100);
     vetor lt_color(0.4,0.4,0.4);
     light lt(lt_pos,lt_color);
