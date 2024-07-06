@@ -88,11 +88,11 @@ class sphere : public object{
             return (ponto_intersecao - this->center).normalizar();
         };
 
-        void translacao(double dx, double dy, double dz){
+        void translacao(double dx, double dy, double dz) override {
             this->center = this->center + point(dx, dy, dz);
         }
 
-        void rotacao(double angle, char eixo, point centroide){};
-        void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY){};
+        void rotacao(double angle, char eixo, point centroide) override {};
+        void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY) override {};
 };
 #endif

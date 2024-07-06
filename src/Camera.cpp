@@ -96,25 +96,20 @@ public:
 
     // Função auxiliar para calcular o vetor refratado
 
-    vetor refract(const vetor& incident, const vetor& normal, double n1, double n2) {
-        vetor norm = normal;
+    vetor refract(vetor& incident, vetor& normal, double n1, double n2) {
         double coso = incident.produto_escalar(normal);
         double seno = sqrt(1 - (coso * coso));
         double senot = (n2 / n1) * seno;
-        double aa = senot * senot;
-        double cosot = sqrt(1 - aa);
-        vetor incid = incident;
-        vetor t = (incid * (n1 / n2));
+        double cosot = sqrt(1 - senot * senot);
         double cons = (cosot - ((n1 / n2) * coso));
-        vetor normall = norm * cons;
-        t = t - normall; 
+        vetor t = (incident * (n1 / n2)) - (normal * cons);
         return t;
     }
 
     vetor phong_shading(ray& r, vector<object*>& objetos, const vector<light>& lights, vetor ambient_light, int index)
     {
         vetor final_color(0,0,0);
-        if(index<=3)
+        if(index<=10)    // pode ser mudado
         {   
             double t = INFINITY;
             double ind = 0;
@@ -137,7 +132,7 @@ public:
                 final_color =  final_color + (objetos[ind]->getKa().getX() * ambient_light); // componente ambiente
                 
                 vetor view_dir = r.getDirection().normalizar();
-                vetor view_espc = (r.getOrigin() - intersection).normalizar();
+                vetor view_spec = (r.getOrigin() - intersection).normalizar();
                 for (const auto& light : lights) {
                     vetor light_dir = (light.getPosition() - intersection).normalizar();
                     
@@ -148,7 +143,7 @@ public:
                     final_color = final_color + ((objetos[ind]->getKd().getX() * objeto_color) * diff);                            
 
                     // Componente especular
-                    double spec = pow(std::max(view_espc.produto_escalar(reflect_dir), 0.0), objetos[ind]->getShininess());
+                    double spec = pow(std::max(view_spec.produto_escalar(reflect_dir), 0.0), objetos[ind]->getShininess());
                     final_color = final_color + (light.getColor() * spec) * (objetos[ind]->getKs().getX());
 
                 }
@@ -170,15 +165,15 @@ public:
                     double n1 = 1; // Índice de refração do ar
                     double n2 = objetos[ind]->getNi(); // Índice de refração do objeto
                     vetor dir_refrac_ray;
-                    if(index==1) 
-                    {
-                        dir_refrac_ray = refract(view_espc, normal, n1, n2);
-                        dir_refrac_ray = dir_refrac_ray * -1;
-                    }
-                    else dir_refrac_ray = refract(view_dir, normal, n2, n1);
+                    /*if(index==1) */
+                    /*{*/
+                    /*    dir_refrac_ray = refract(view_spec, normal, n1, n2);*/
+                    /*    dir_refrac_ray = dir_refrac_ray * -1;*/
+                    /*}*/
+                    dir_refrac_ray = refract(view_dir, normal, n1, n2);
                     if (dir_refrac_ray.norma() != 0) { // Verifica se não houve reflexão total
-                        point neww_intersection = intersection + dir_refrac_ray * 0.00001;
-                        ray refrac_ray(neww_intersection, dir_refrac_ray);
+                        point new_intersection = intersection + dir_refrac_ray * 0.00001;
+                        ray refrac_ray(new_intersection, dir_refrac_ray);
                         vetor refrac_color = phong_shading(refrac_ray,objetos,lights, ambient_light, index);
                         refrac_color = refrac_color * (objetos[ind]->getNi());
                         final_color = final_color + (refrac_color);
@@ -222,7 +217,7 @@ public:
                 ray_direction = ray_direction.normalizar();
                 ray r(camera_center, ray_direction);
                 
-                tuple<int, double, vetor> pixel_info(0, 0, vetor(0, 0, 0));
+                // tuple<int, double, vetor> pixel_info(0, 0, vetor(0, 0, 0));
 
                 vetor final_color = phong_shading(r,objetos,lights,ambient_light,0);
                 final_color.write_color(cout);
