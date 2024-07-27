@@ -1,0 +1,12 @@
+# Blender 4.0.2 MTL File: 'None'
+# www.blender.org
+
+newmtl Material
+Ns 10.0
+Ka 0.6 1.000000 1.000000
+Kd 0.500007 0.160654 0.145746
+Ks 1 1 1
+Ke 0.000000 0.000000 0.000000
+Ni 0.95
+d 0
+illum 2

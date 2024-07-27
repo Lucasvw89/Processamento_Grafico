@@ -1,0 +1,7 @@
+*.exe
+*.out
+*.ppm
+*.png
+/.vscode
+/output
+/src/output
