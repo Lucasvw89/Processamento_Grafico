@@ -109,7 +109,7 @@ public:
     vetor phong_shading(ray& r, vector<object*>& objetos, const vector<light>& lights, vetor ambient_light, int index)
     {
         vetor final_color(0,0,0);
-        if(index<=10)    // pode ser mudado
+        if(index<=100)    // pode ser mudado
         {   
             double t = INFINITY;
             double ind = 0;
