@@ -20,7 +20,7 @@ using namespace std;
 
 vector<object*> create_torus(double R, double r, int small_rad_sub, int big_rad_sub, vetor kd, vetor ks, vetor ke, vetor ka, double ns, double ni, double d) {
 
-    double PI = 3.1415926;
+    const double PI = 3.1415926;
 
     triangle* tri1;
     triangle* tri2;

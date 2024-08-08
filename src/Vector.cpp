@@ -2,6 +2,7 @@
 #define VECTORHEADER
 #include <iostream>
 #include <math.h>
+#include <cstdint>
 
 class vetor{
     private:
