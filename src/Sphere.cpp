@@ -94,5 +94,37 @@ class sphere : public object{
 
         void rotacao(double angle, char eixo, point centroide) override {};
         void cisalhamento(double shXY, double shXZ, double shYX, double shYZ, double shZX, double shZY) override {};
+
+        // -----------------------------------------------
+
+        vetor sphere_map(point& p)
+        {
+            double x = p.getX() - center.getX();
+            double y = p.getZ() - center.getZ();
+            double theta = std::atan2(x,y);
+
+            double phi = acos((p.getY() - center.getY()) / radius);
+
+            double u = theta / ((double)2 * acos(-1));
+
+            u = (double)1 - (u + (double)0.5);
+
+            double v = (double)1 - phi / acos(-1);
+
+            return vetor(u,v,0);
+        }
+
+        /*
+        # we want v to be 0 at the south pole of the sphere,
+        # and 1 at the north pole, so we have to "flip it over"
+        # by subtracting it from 1.
+        let v ← 1 - phi / π
+
+        return (u, v)
+        end function
+        */
+
+        // -----------------------------------------------
+
 };
 #endif
